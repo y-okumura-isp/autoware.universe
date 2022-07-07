@@ -146,8 +146,9 @@ sensor_msgs::msg::PointCloud2 PolygonRemoverComponent::remove_polygon_cgal_from_
 
   sensor_msgs::msg::PointCloud2 transformed_cluster = *cloud_in_ptr;
 
-  point_cloud_msg_wrapper::PointCloud2View<autoware::common::types::PointXYZ> view{transformed_cluster};
-  for (const auto& point : view) {
+  point_cloud_msg_wrapper::PointCloud2View<autoware::common::types::PointXYZ> view{
+    transformed_cluster};
+  for (const auto & point : view) {
     if (
       CGAL::bounded_side_2(
         polyline_polygon.begin(), polyline_polygon.end(), PointCgal(*iter_x, *iter_y), K()) ==
