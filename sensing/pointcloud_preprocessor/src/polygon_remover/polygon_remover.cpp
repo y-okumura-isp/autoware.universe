@@ -151,8 +151,9 @@ sensor_msgs::msg::PointCloud2 PolygonRemoverComponent::remove_polygon_cgal_from_
   for (const auto & point : view) {
     if (
       CGAL::bounded_side_2(
-        polyline_polygon.begin(), polyline_polygon.end(), PointCgal(*iter_x, *iter_y), K()) ==
-      CGAL::ON_UNBOUNDED_SIDE) {
+        polyline_polygon.begin(), polyline_polygon.end(), PointCgal(point.x, point.y), K()) ==
+      CGAL::ON_UNBOUNDED_SIDE)
+    {
       pcl::PointXYZ p;
       p.x = point.x;
       p.y = point.y;
