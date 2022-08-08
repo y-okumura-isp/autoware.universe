@@ -24,9 +24,12 @@
 #include <string>
 #include <utility>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace image_preprocessor
 {
-class ImageTransportDecompressor : public rclcpp::Node
+class ImageTransportDecompressor : public tilde::TildeNode
 {
 public:
   explicit ImageTransportDecompressor(const rclcpp::NodeOptions & node_options);
@@ -36,7 +39,7 @@ private:
     const sensor_msgs::msg::CompressedImage::ConstSharedPtr input_compressed_image_msg);
 
   rclcpp::Subscription<sensor_msgs::msg::CompressedImage>::SharedPtr compressed_image_sub_;
-  rclcpp::Publisher<sensor_msgs::msg::Image>::SharedPtr raw_image_pub_;
+  tilde::TildePublisher<sensor_msgs::msg::Image>::SharedPtr raw_image_pub_;
   std::string encoding_;
 };
 

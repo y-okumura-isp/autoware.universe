@@ -40,9 +40,12 @@
 
 #include <string>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace gnss_poser
 {
-class GNSSPoser : public rclcpp::Node
+class GNSSPoser : public tilde::TildeNode
 {
 public:
   explicit GNSSPoser(const rclcpp::NodeOptions & node_options);
@@ -82,9 +85,9 @@ private:
   rclcpp::Subscription<autoware_sensing_msgs::msg::GnssInsOrientationStamped>::SharedPtr
     autoware_orientation_sub_;
 
-  rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pose_pub_;
-  rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr pose_cov_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::BoolStamped>::SharedPtr fixed_pub_;
+  tilde::TildePublisher<geometry_msgs::msg::PoseStamped>::SharedPtr pose_pub_;
+  tilde::TildePublisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr pose_cov_pub_;
+  tilde::TildePublisher<tier4_debug_msgs::msg::BoolStamped>::SharedPtr fixed_pub_;
 
   CoordinateSystem coordinate_system_;
   std::string base_frame_;

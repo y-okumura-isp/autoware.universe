@@ -84,6 +84,9 @@
 #include <tf2_ros/buffer.h>
 #include <tf2_ros/transform_listener.h>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace pointcloud_preprocessor
 {
 using autoware_point_types::PointXYZI;
@@ -94,7 +97,7 @@ using point_cloud_msg_wrapper::PointCloud2Modifier;
  * PointCloud output message.
  * \author Radu Bogdan Rusu
  */
-class PointCloudConcatenateDataSynchronizerComponent : public rclcpp::Node
+class PointCloudConcatenateDataSynchronizerComponent : public tilde::TildeNode
 {
 public:
   typedef sensor_msgs::msg::PointCloud2 PointCloud2;
@@ -113,7 +116,7 @@ public:
 
 private:
   /** \brief The output PointCloud publisher. */
-  rclcpp::Publisher<PointCloud2>::SharedPtr pub_output_;
+  tilde::TildePublisher<PointCloud2>::SharedPtr pub_output_;
 
   /** \brief The maximum number of messages that we can store in the queue. */
   int maximum_queue_size_ = 3;

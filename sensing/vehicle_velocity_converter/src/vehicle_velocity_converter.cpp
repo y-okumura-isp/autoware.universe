@@ -14,7 +14,7 @@
 
 #include "vehicle_velocity_converter/vehicle_velocity_converter.hpp"
 
-VehicleVelocityConverter::VehicleVelocityConverter() : Node("vehicle_velocity_converter")
+VehicleVelocityConverter::VehicleVelocityConverter() : TildeNode("vehicle_velocity_converter")
 {
   // set covariance value for twist with covariance msg
   std::vector<double> covariance = declare_parameter<std::vector<double>>("twist_covariance");
@@ -23,11 +23,11 @@ VehicleVelocityConverter::VehicleVelocityConverter() : Node("vehicle_velocity_co
   }
   frame_id_ = declare_parameter("frame_id", "base_link");
 
-  vehicle_report_sub_ = create_subscription<autoware_auto_vehicle_msgs::msg::VelocityReport>(
+  vehicle_report_sub_ = create_tilde_subscription<autoware_auto_vehicle_msgs::msg::VelocityReport>(
     "velocity_status", rclcpp::QoS{100},
     std::bind(&VehicleVelocityConverter::callbackVelocityReport, this, std::placeholders::_1));
 
-  twist_with_covariance_pub_ = create_publisher<geometry_msgs::msg::TwistWithCovarianceStamped>(
+  twist_with_covariance_pub_ = create_tilde_publisher<geometry_msgs::msg::TwistWithCovarianceStamped>(
     "twist_with_covariance", rclcpp::QoS{10});
 }
 

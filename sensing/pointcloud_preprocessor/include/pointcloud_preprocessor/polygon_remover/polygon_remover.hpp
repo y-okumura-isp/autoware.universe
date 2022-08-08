@@ -26,6 +26,9 @@
 
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 using K = CGAL::Exact_predicates_inexact_constructions_kernel;
 using PointCgal = K::Point_2;
 
@@ -57,7 +60,7 @@ private:
   std::vector<PointCgal> polygon_cgal_;
   visualization_msgs::msg::Marker marker_;
 
-  rclcpp::Publisher<visualization_msgs::msg::Marker>::SharedPtr pub_marker_ptr_;
+  tilde::TildePublisher<visualization_msgs::msg::Marker>::SharedPtr pub_marker_ptr_;
 
 public:
   PCL_MAKE_ALIGNED_OPERATOR_NEW

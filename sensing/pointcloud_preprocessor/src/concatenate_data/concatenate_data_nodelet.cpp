@@ -67,7 +67,7 @@ namespace pointcloud_preprocessor
 {
 PointCloudConcatenateDataSynchronizerComponent::PointCloudConcatenateDataSynchronizerComponent(
   const rclcpp::NodeOptions & node_options)
-: Node("point_cloud_concatenator_component", node_options)
+: TildeNode("point_cloud_concatenator_component", node_options)
 {
   // initialize debug tool
   {
@@ -130,7 +130,7 @@ PointCloudConcatenateDataSynchronizerComponent::PointCloudConcatenateDataSynchro
 
   // Publishers
   {
-    pub_output_ = this->create_publisher<PointCloud2>(
+    pub_output_ = this->create_tilde_publisher<PointCloud2>(
       "output", rclcpp::SensorDataQoS().keep_last(maximum_queue_size_));
   }
 
@@ -156,12 +156,12 @@ PointCloudConcatenateDataSynchronizerComponent::PointCloudConcatenateDataSynchro
         std::placeholders::_1, input_topics_[d]);
 
       filters_[d].reset();
-      filters_[d] = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+      filters_[d] = this->create_tilde_subscription<sensor_msgs::msg::PointCloud2>(
         input_topics_[d], rclcpp::SensorDataQoS().keep_last(maximum_queue_size_), cb);
     }
     auto twist_cb = std::bind(
       &PointCloudConcatenateDataSynchronizerComponent::twist_callback, this, std::placeholders::_1);
-    sub_twist_ = this->create_subscription<autoware_auto_vehicle_msgs::msg::VelocityReport>(
+    sub_twist_ = this->create_tilde_subscription<autoware_auto_vehicle_msgs::msg::VelocityReport>(
       "/vehicle/status/velocity_status", rclcpp::QoS{100}, twist_cb);
   }
 

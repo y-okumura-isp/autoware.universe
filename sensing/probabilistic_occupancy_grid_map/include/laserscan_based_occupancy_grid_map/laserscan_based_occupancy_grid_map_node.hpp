@@ -36,6 +36,9 @@
 #include <memory>
 #include <string>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace occupancy_grid_map
 {
 using builtin_interfaces::msg::Time;
@@ -48,7 +51,7 @@ using sensor_msgs::msg::PointCloud2;
 using tf2_ros::Buffer;
 using tf2_ros::TransformListener;
 
-class LaserscanBasedOccupancyGridMapNode : public rclcpp::Node
+class LaserscanBasedOccupancyGridMapNode : public tilde::TildeNode
 {
 public:
   explicit LaserscanBasedOccupancyGridMapNode(const rclcpp::NodeOptions & node_options);
@@ -72,7 +75,7 @@ private:
   }
 
 private:
-  rclcpp::Publisher<OccupancyGrid>::SharedPtr occupancy_grid_map_pub_;
+  tilde::TildePublisher<OccupancyGrid>::SharedPtr occupancy_grid_map_pub_;
   message_filters::Subscriber<LaserScan> laserscan_sub_;
   message_filters::Subscriber<PointCloud2> obstacle_pointcloud_sub_;
   message_filters::Subscriber<PointCloud2> raw_pointcloud_sub_;

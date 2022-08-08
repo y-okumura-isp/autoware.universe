@@ -34,6 +34,9 @@
 #include <unordered_map>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace pointcloud_preprocessor
 {
 using diagnostic_updater::DiagnosticStatusWrapper;
@@ -57,8 +60,8 @@ protected:
   /** \brief Parameter service callback */
   rcl_interfaces::msg::SetParametersResult paramCallback(const std::vector<rclcpp::Parameter> & p);
   image_transport::Publisher image_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr visibility_pub_;
-  rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr noise_cloud_pub_;
+  tilde::TildePublisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr visibility_pub_;
+  tilde::TildePublisher<sensor_msgs::msg::PointCloud2>::SharedPtr noise_cloud_pub_;
 
 private:
   void onVisibilityChecker(DiagnosticStatusWrapper & stat);

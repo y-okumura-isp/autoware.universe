@@ -20,9 +20,9 @@ namespace image_diagnostics
 {
 using image_diagnostics::Image_State;
 ImageDiagNode::ImageDiagNode(const rclcpp::NodeOptions & node_options)
-: Node("image_diagnostics_node", node_options)
+: TildeNode("image_diagnostics_node", node_options)
 {
-  image_sub_ = create_subscription<sensor_msgs::msg::Image>(
+  image_sub_ = create_tilde_subscription<sensor_msgs::msg::Image>(
     "input/raw_image", rclcpp::SensorDataQoS(),
     std::bind(&ImageDiagNode::ImageChecker, this, std::placeholders::_1));
   block_diag_image_pub_ =
@@ -30,7 +30,7 @@ ImageDiagNode::ImageDiagNode(const rclcpp::NodeOptions & node_options)
   dft_image_pub_ = image_transport::create_publisher(this, "image_diag/debug/dft_image");
   gray_image_pub_ = image_transport::create_publisher(this, "image_diag/debug/gray_image");
 
-  image_state_pub_ = create_publisher<tier4_debug_msgs::msg::Int32Stamped>(
+  image_state_pub_ = create_tilde_publisher<tier4_debug_msgs::msg::Int32Stamped>(
     "image_diag/image_state_diag", rclcpp::SensorDataQoS());
 
   updater_.setHardwareID("Image_Diagnostics");

@@ -22,7 +22,7 @@ namespace pointcloud_preprocessor
 {
 /** @brief Constructor. */
 DistortionCorrectorComponent::DistortionCorrectorComponent(const rclcpp::NodeOptions & options)
-: Node("distortion_corrector_node", options)
+: TildeNode("distortion_corrector_node", options)
 {
   // initialize debug tool
   {
@@ -40,17 +40,17 @@ DistortionCorrectorComponent::DistortionCorrectorComponent(const rclcpp::NodeOpt
 
   // Publisher
   undistorted_points_pub_ =
-    this->create_publisher<PointCloud2>("~/output/pointcloud", rclcpp::SensorDataQoS());
+    this->create_tilde_publisher<PointCloud2>("~/output/pointcloud", rclcpp::SensorDataQoS());
 
   // Subscriber
-  twist_sub_ = this->create_subscription<geometry_msgs::msg::TwistWithCovarianceStamped>(
+  twist_sub_ = this->create_tilde_subscription<geometry_msgs::msg::TwistWithCovarianceStamped>(
     "~/input/twist", 10,
     std::bind(
       &DistortionCorrectorComponent::onTwistWithCovarianceStamped, this, std::placeholders::_1));
-  imu_sub_ = this->create_subscription<sensor_msgs::msg::Imu>(
+  imu_sub_ = this->create_tilde_subscription<sensor_msgs::msg::Imu>(
     "~/input/imu", 10,
     std::bind(&DistortionCorrectorComponent::onImu, this, std::placeholders::_1));
-  input_points_sub_ = this->create_subscription<PointCloud2>(
+  input_points_sub_ = this->create_tilde_subscription<PointCloud2>(
     "~/input/pointcloud", rclcpp::SensorDataQoS(),
     std::bind(&DistortionCorrectorComponent::onPointCloud, this, std::placeholders::_1));
 }

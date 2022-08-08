@@ -37,19 +37,19 @@ POINT_CLOUD_REGISTER_POINT_STRUCT(
 namespace livox_tag_filter
 {
 LivoxTagFilterNode::LivoxTagFilterNode(const rclcpp::NodeOptions & node_options)
-: Node("livox_tag_filter", node_options)
+: TildeNode("livox_tag_filter", node_options)
 {
   // Parameter
   ignore_tags_ = this->declare_parameter("ignore_tags", std::vector<std::int64_t>{});
 
   // Subscriber
   using std::placeholders::_1;
-  sub_pointcloud_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+  sub_pointcloud_ = this->create_tilde_subscription<sensor_msgs::msg::PointCloud2>(
     "input", rclcpp::SensorDataQoS(), std::bind(&LivoxTagFilterNode::onPointCloud, this, _1));
 
   // Publisher
   pub_pointcloud_ =
-    this->create_publisher<sensor_msgs::msg::PointCloud2>("output", rclcpp::SensorDataQoS());
+    this->create_tilde_publisher<sensor_msgs::msg::PointCloud2>("output", rclcpp::SensorDataQoS());
 }
 
 void LivoxTagFilterNode::onPointCloud(const sensor_msgs::msg::PointCloud2::ConstSharedPtr msg)

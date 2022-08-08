@@ -12,6 +12,8 @@
   <build_depend>autoware_cmake</build_depend>
 
   <depend>rclcpp</depend>
+  <depend>tilde</depend>
+  <depend>tilde_msg</depend>
   <depend>rclcpp_components</depend>
   <depend>sensor_msgs</depend>
 

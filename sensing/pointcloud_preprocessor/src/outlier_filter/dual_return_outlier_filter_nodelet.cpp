@@ -70,9 +70,9 @@ DualReturnOutlierFilterComponent::DualReturnOutlierFilterComponent(
 
   image_pub_ =
     image_transport::create_publisher(this, "dual_return_outlier_filter/debug/frequency_image");
-  visibility_pub_ = create_publisher<tier4_debug_msgs::msg::Float32Stamped>(
+  visibility_pub_ = create_tilde_publisher<tier4_debug_msgs::msg::Float32Stamped>(
     "dual_return_outlier_filter/debug/visibility", rclcpp::SensorDataQoS());
-  noise_cloud_pub_ = create_publisher<sensor_msgs::msg::PointCloud2>(
+  noise_cloud_pub_ = create_tilde_publisher<sensor_msgs::msg::PointCloud2>(
     "dual_return_outlier_filter/debug/pointcloud_noise", rclcpp::SensorDataQoS());
 
   using std::placeholders::_1;

@@ -24,7 +24,7 @@
 namespace gnss_poser
 {
 GNSSPoser::GNSSPoser(const rclcpp::NodeOptions & node_options)
-: rclcpp::Node("gnss_poser", node_options),
+: TildeNode("gnss_poser", node_options),
   tf2_listener_(tf2_buffer_),
   tf2_broadcaster_(*this),
   base_frame_(declare_parameter("base_frame", "base_link")),
@@ -47,17 +47,17 @@ GNSSPoser::GNSSPoser(const rclcpp::NodeOptions & node_options)
   int buff_epoch = declare_parameter("buff_epoch", 1);
   position_buffer_.set_capacity(buff_epoch);
 
-  nav_sat_fix_sub_ = create_subscription<sensor_msgs::msg::NavSatFix>(
+  nav_sat_fix_sub_ = create_tilde_subscription<sensor_msgs::msg::NavSatFix>(
     "fix", rclcpp::QoS{1}, std::bind(&GNSSPoser::callbackNavSatFix, this, std::placeholders::_1));
   autoware_orientation_sub_ =
-    create_subscription<autoware_sensing_msgs::msg::GnssInsOrientationStamped>(
+    create_tilde_subscription<autoware_sensing_msgs::msg::GnssInsOrientationStamped>(
       "autoware_orientation", rclcpp::QoS{1},
       std::bind(&GNSSPoser::callbackGnssInsOrientationStamped, this, std::placeholders::_1));
 
-  pose_pub_ = create_publisher<geometry_msgs::msg::PoseStamped>("gnss_pose", rclcpp::QoS{1});
-  pose_cov_pub_ = create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(
+  pose_pub_ = create_tilde_publisher<geometry_msgs::msg::PoseStamped>("gnss_pose", rclcpp::QoS{1});
+  pose_cov_pub_ = create_tilde_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>(
     "gnss_pose_cov", rclcpp::QoS{1});
-  fixed_pub_ = create_publisher<tier4_debug_msgs::msg::BoolStamped>("gnss_fixed", rclcpp::QoS{1});
+  fixed_pub_ = create_tilde_publisher<tier4_debug_msgs::msg::BoolStamped>("gnss_fixed", rclcpp::QoS{1});
 }
 
 void GNSSPoser::callbackNavSatFix(

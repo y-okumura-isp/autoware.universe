@@ -18,9 +18,12 @@
 
 #include <sensor_msgs/msg/imu.hpp>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace imu_corrector
 {
-class ImuCorrector : public rclcpp::Node
+class ImuCorrector : public tilde::TildeNode
 {
 public:
   explicit ImuCorrector(const rclcpp::NodeOptions & node_options);
@@ -30,7 +33,7 @@ private:
 
   rclcpp::Subscription<sensor_msgs::msg::Imu>::SharedPtr imu_sub_;
 
-  rclcpp::Publisher<sensor_msgs::msg::Imu>::SharedPtr imu_pub_;
+  tilde::TildePublisher<sensor_msgs::msg::Imu>::SharedPtr imu_pub_;
 
   double angular_velocity_offset_x_;
   double angular_velocity_offset_y_;

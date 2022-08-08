@@ -51,9 +51,9 @@ BlockageDiagComponent::BlockageDiagComponent(const rclcpp::NodeOptions & options
   blockage_mask_pub_ =
     image_transport::create_publisher(this, "blockage_diag/debug/blockage_mask_image");
 
-  ground_blockage_ratio_pub_ = create_publisher<tier4_debug_msgs::msg::Float32Stamped>(
+  ground_blockage_ratio_pub_ = create_tilde_publisher<tier4_debug_msgs::msg::Float32Stamped>(
     "blockage_diag/debug/ground_blockage_ratio", rclcpp::SensorDataQoS());
-  sky_blockage_ratio_pub_ = create_publisher<tier4_debug_msgs::msg::Float32Stamped>(
+  sky_blockage_ratio_pub_ = create_tilde_publisher<tier4_debug_msgs::msg::Float32Stamped>(
     "blockage_diag/debug/sky_blockage_ratio", rclcpp::SensorDataQoS());
 
   using std::placeholders::_1;

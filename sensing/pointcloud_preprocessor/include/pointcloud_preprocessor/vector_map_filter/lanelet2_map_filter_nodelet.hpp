@@ -39,13 +39,16 @@
 #include <string>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 using tier4_autoware_utils::LinearRing2d;
 using tier4_autoware_utils::MultiPoint2d;
 using tier4_autoware_utils::Point2d;
 
 namespace pointcloud_preprocessor
 {
-class Lanelet2MapFilterComponent : public rclcpp::Node
+class Lanelet2MapFilterComponent : public tilde::TildeNode
 {
   using PointCloud2 = sensor_msgs::msg::PointCloud2;
   using PointCloud2Ptr = sensor_msgs::msg::PointCloud2::SharedPtr;
@@ -60,7 +63,7 @@ private:
 
   rclcpp::Subscription<autoware_auto_mapping_msgs::msg::HADMapBin>::SharedPtr map_sub_;
   rclcpp::Subscription<PointCloud2>::SharedPtr pointcloud_sub_;
-  rclcpp::Publisher<PointCloud2>::SharedPtr filtered_pointcloud_pub_;
+  tilde::TildePublisher<PointCloud2>::SharedPtr filtered_pointcloud_pub_;
 
   lanelet::LaneletMapPtr lanelet_map_ptr_;
   lanelet::ConstLanelets road_lanelets_;

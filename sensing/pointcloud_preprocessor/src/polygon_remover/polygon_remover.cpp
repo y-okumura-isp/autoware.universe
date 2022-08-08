@@ -22,7 +22,7 @@ namespace pointcloud_preprocessor
 PolygonRemoverComponent::PolygonRemoverComponent(const rclcpp::NodeOptions & options)
 : Filter("PolygonRemover", options)
 {
-  pub_marker_ptr_ = this->create_publisher<visualization_msgs::msg::Marker>("Removed_polygon", 10);
+  pub_marker_ptr_ = this->create_tilde_publisher<visualization_msgs::msg::Marker>("Removed_polygon", 10);
 
   this->declare_parameter<std::vector<double>>("polygon_vertices");
   this->get_parameter("polygon_vertices", param);

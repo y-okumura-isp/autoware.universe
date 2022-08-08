@@ -33,7 +33,7 @@
 namespace pointcloud_preprocessor
 {
 Lanelet2MapFilterComponent::Lanelet2MapFilterComponent(const rclcpp::NodeOptions & node_options)
-: Node("LaneletMapFilter", node_options)
+: TildeNode("LaneletMapFilter", node_options)
 {
   using std::placeholders::_1;
 
@@ -46,15 +46,15 @@ Lanelet2MapFilterComponent::Lanelet2MapFilterComponent(const rclcpp::NodeOptions
   // Set publisher
   {
     filtered_pointcloud_pub_ =
-      this->create_publisher<PointCloud2>("output", rclcpp::SensorDataQoS());
+      this->create_tilde_publisher<PointCloud2>("output", rclcpp::SensorDataQoS());
   }
 
   // Set subscriber
   {
-    map_sub_ = this->create_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
+    map_sub_ = this->create_tilde_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
       "input/vector_map", rclcpp::QoS{1}.transient_local(),
       std::bind(&Lanelet2MapFilterComponent::mapCallback, this, _1));
-    pointcloud_sub_ = this->create_subscription<PointCloud2>(
+    pointcloud_sub_ = this->create_tilde_subscription<PointCloud2>(
       "input/pointcloud", rclcpp::SensorDataQoS(),
       std::bind(&Lanelet2MapFilterComponent::pointcloudCallback, this, _1));
   }

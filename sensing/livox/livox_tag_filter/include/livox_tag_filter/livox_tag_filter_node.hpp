@@ -22,9 +22,12 @@
 #include <memory>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace livox_tag_filter
 {
-class LivoxTagFilterNode : public rclcpp::Node
+class LivoxTagFilterNode : public tilde::TildeNode
 {
 public:
   explicit LivoxTagFilterNode(const rclcpp::NodeOptions & node_options);
@@ -39,7 +42,7 @@ private:
   void onPointCloud(const sensor_msgs::msg::PointCloud2::ConstSharedPtr msg);
 
   // Publisher
-  rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr pub_pointcloud_;
+  tilde::TildePublisher<sensor_msgs::msg::PointCloud2>::SharedPtr pub_pointcloud_;
 };
 }  // namespace livox_tag_filter
 

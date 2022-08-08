@@ -30,6 +30,9 @@
 
 #include <string>
 #include <unordered_map>
+
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
 namespace image_diagnostics
 {
 using diagnostic_updater::DiagnosticStatusWrapper;
@@ -73,7 +76,7 @@ std::unordered_map<std::string, cv::Scalar> state_color_map_ = {
   {"BLOCKAGE", cv::Scalar(0, 0, 200)},    {"LOW_VIS", cv::Scalar(0, 200, 200)},
   {"BACKLIGHT", cv::Scalar(200, 0, 200)}, {"BORDER", cv::Scalar(255, 255, 255)}};
 
-class ImageDiagNode : public rclcpp::Node
+class ImageDiagNode : public tilde::TildeNode
 {
 private:
   void ImageChecker(const sensor_msgs::msg::Image::ConstSharedPtr input_image_msg);
@@ -90,8 +93,8 @@ protected:
   image_transport::Publisher block_diag_image_pub_;
   image_transport::Publisher dft_image_pub_;
   image_transport::Publisher gray_image_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Float32MultiArrayStamped>::SharedPtr average_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Int32Stamped>::SharedPtr image_state_pub_;
+  tilde::TildePublisher<tier4_debug_msgs::msg::Float32MultiArrayStamped>::SharedPtr average_pub_;
+  tilde::TildePublisher<tier4_debug_msgs::msg::Int32Stamped>::SharedPtr image_state_pub_;
 };
 
 }  // namespace image_diagnostics

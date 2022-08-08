@@ -103,7 +103,7 @@ using geometry_msgs::msg::Pose;
 
 LaserscanBasedOccupancyGridMapNode::LaserscanBasedOccupancyGridMapNode(
   const rclcpp::NodeOptions & node_options)
-: Node("laserscan_based_occupancy_grid_map_node", node_options)
+: TildeNode("laserscan_based_occupancy_grid_map_node", node_options)
 {
   using std::placeholders::_1;
   using std::placeholders::_2;
@@ -145,7 +145,7 @@ LaserscanBasedOccupancyGridMapNode::LaserscanBasedOccupancyGridMapNode(
   sync_ptr_->registerCallback(std::bind(
     &LaserscanBasedOccupancyGridMapNode::onLaserscanPointCloud2WithObstacleAndRaw, this, _1, _2,
     _3));
-  occupancy_grid_map_pub_ = create_publisher<OccupancyGrid>("~/output/occupancy_grid_map", 1);
+  occupancy_grid_map_pub_ = create_tilde_publisher<OccupancyGrid>("~/output/occupancy_grid_map", 1);
 
   /* Occupancy grid */
   occupancy_grid_map_updater_ptr_ = std::make_shared<OccupancyGridMapBBFUpdater>(
