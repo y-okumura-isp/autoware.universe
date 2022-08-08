@@ -32,7 +32,10 @@
 #include <memory>
 #include <string>
 
-class PoseInitializer : public rclcpp::Node
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
+class PoseInitializer : public tilde::TildeNode
 {
 public:
   PoseInitializer();
@@ -67,7 +70,7 @@ private:
   rclcpp::Subscription<tier4_localization_msgs::msg::PoseInitializationRequest>::SharedPtr
     pose_initialization_request_sub_;
 
-  rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr initial_pose_pub_;
+  tilde::TildePublisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr initial_pose_pub_;
 
   rclcpp::Client<tier4_localization_msgs::srv::PoseWithCovarianceStamped>::SharedPtr ndt_client_;
 

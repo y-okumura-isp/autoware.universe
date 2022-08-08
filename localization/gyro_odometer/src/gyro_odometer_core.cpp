@@ -25,25 +25,25 @@
 #include <string>
 
 GyroOdometer::GyroOdometer()
-: Node("gyro_odometer"),
+: TildeNode("gyro_odometer"),
   tf_buffer_(this->get_clock()),
   tf_listener_(tf_buffer_),
   output_frame_(declare_parameter("base_link", "base_link")),
   message_timeout_sec_(declare_parameter("message_timeout_sec", 0.2))
 {
-  vehicle_twist_with_cov_sub_ = create_subscription<geometry_msgs::msg::TwistWithCovarianceStamped>(
+  vehicle_twist_with_cov_sub_ = create_tilde_subscription<geometry_msgs::msg::TwistWithCovarianceStamped>(
     "vehicle/twist_with_covariance", rclcpp::QoS{100},
     std::bind(&GyroOdometer::callbackTwistWithCovariance, this, std::placeholders::_1));
 
-  imu_sub_ = create_subscription<sensor_msgs::msg::Imu>(
+  imu_sub_ = create_tilde_subscription<sensor_msgs::msg::Imu>(
     "imu", rclcpp::QoS{100}, std::bind(&GyroOdometer::callbackImu, this, std::placeholders::_1));
 
-  twist_raw_pub_ = create_publisher<geometry_msgs::msg::TwistStamped>("twist_raw", rclcpp::QoS{10});
-  twist_with_covariance_raw_pub_ = create_publisher<geometry_msgs::msg::TwistWithCovarianceStamped>(
+  twist_raw_pub_ = create_tilde_publisher<geometry_msgs::msg::TwistStamped>("twist_raw", rclcpp::QoS{10});
+  twist_with_covariance_raw_pub_ = create_tilde_publisher<geometry_msgs::msg::TwistWithCovarianceStamped>(
     "twist_with_covariance_raw", rclcpp::QoS{10});
 
-  twist_pub_ = create_publisher<geometry_msgs::msg::TwistStamped>("twist", rclcpp::QoS{10});
-  twist_with_covariance_pub_ = create_publisher<geometry_msgs::msg::TwistWithCovarianceStamped>(
+  twist_pub_ = create_tilde_publisher<geometry_msgs::msg::TwistStamped>("twist", rclcpp::QoS{10});
+  twist_with_covariance_pub_ = create_tilde_publisher<geometry_msgs::msg::TwistWithCovarianceStamped>(
     "twist_with_covariance", rclcpp::QoS{10});
 
   // TODO(YamatoAndo) createTimer

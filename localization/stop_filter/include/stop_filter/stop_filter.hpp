@@ -34,14 +34,17 @@
 #include <string>
 #include <vector>
 
-class StopFilter : public rclcpp::Node
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
+class StopFilter : public tilde::TildeNode
 {
 public:
   StopFilter(const std::string & node_name, const rclcpp::NodeOptions & options);
 
 private:
-  rclcpp::Publisher<nav_msgs::msg::Odometry>::SharedPtr pub_odom_;  //!< @brief odom publisher
-  rclcpp::Publisher<tier4_debug_msgs::msg::BoolStamped>::SharedPtr
+  tilde::TildePublisher<nav_msgs::msg::Odometry>::SharedPtr pub_odom_;  //!< @brief odom publisher
+  tilde::TildePublisher<tier4_debug_msgs::msg::BoolStamped>::SharedPtr
     pub_stop_flag_;  //!< @brief stop flag publisher
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr
     sub_odom_;  //!< @brief measurement odometry subscriber

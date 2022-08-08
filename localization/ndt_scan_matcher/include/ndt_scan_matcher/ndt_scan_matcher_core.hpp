@@ -62,6 +62,9 @@
 #include <thread>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 enum class NDTImplementType { PCL_GENERIC = 0, PCL_MODIFIED = 1, OMP = 2 };
 enum class ConvergedParamType {
   TRANSFORM_PROBABILITY = 0,
@@ -90,7 +93,7 @@ std::shared_ptr<NormalDistributionsTransformBase<PointSource, PointTarget>> getN
   throw std::runtime_error(s);
 }
 
-class NDTScanMatcher : public rclcpp::Node
+class NDTScanMatcher : public tilde::TildeNode
 {
   using PointSource = pcl::PointXYZ;
   using PointTarget = pcl::PointXYZ;
@@ -148,27 +151,27 @@ private:
   rclcpp::Subscription<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr
     regularization_pose_sub_;
 
-  rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr sensor_aligned_pose_pub_;
-  rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr ndt_pose_pub_;
-  rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr
+  tilde::TildePublisher<sensor_msgs::msg::PointCloud2>::SharedPtr sensor_aligned_pose_pub_;
+  tilde::TildePublisher<geometry_msgs::msg::PoseStamped>::SharedPtr ndt_pose_pub_;
+  tilde::TildePublisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr
     ndt_pose_with_covariance_pub_;
-  rclcpp::Publisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr
+  tilde::TildePublisher<geometry_msgs::msg::PoseWithCovarianceStamped>::SharedPtr
     initial_pose_with_covariance_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr exe_time_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr transform_probability_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr
+  tilde::TildePublisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr exe_time_pub_;
+  tilde::TildePublisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr transform_probability_pub_;
+  tilde::TildePublisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr
     nearest_voxel_transformation_likelihood_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Int32Stamped>::SharedPtr iteration_num_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr
+  tilde::TildePublisher<tier4_debug_msgs::msg::Int32Stamped>::SharedPtr iteration_num_pub_;
+  tilde::TildePublisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr
     initial_to_result_distance_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr
+  tilde::TildePublisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr
     initial_to_result_distance_old_pub_;
-  rclcpp::Publisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr
+  tilde::TildePublisher<tier4_debug_msgs::msg::Float32Stamped>::SharedPtr
     initial_to_result_distance_new_pub_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr ndt_marker_pub_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr ndt_marker_pub_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr
     ndt_monte_carlo_initial_pose_marker_pub_;
-  rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr diagnostics_pub_;
+  tilde::TildePublisher<diagnostic_msgs::msg::DiagnosticArray>::SharedPtr diagnostics_pub_;
 
   rclcpp::Service<tier4_localization_msgs::srv::PoseWithCovarianceStamped>::SharedPtr service_;
 

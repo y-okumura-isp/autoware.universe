@@ -48,7 +48,7 @@ double getGroundHeight(const pcl::PointCloud<pcl::PointXYZ>::Ptr pcdmap, const t
 }
 
 PoseInitializer::PoseInitializer()
-: Node("pose_initializer"), tf2_listener_(tf2_buffer_), map_frame_("map")
+: TildeNode("pose_initializer"), tf2_listener_(tf2_buffer_), map_frame_("map")
 {
   enable_gnss_callback_ = this->declare_parameter("enable_gnss_callback", true);
 
@@ -69,22 +69,22 @@ PoseInitializer::PoseInitializer()
   CopyVectorToArray(output_pose_covariance, output_pose_covariance_);
 
   // We can't use _1 because pcl leaks an alias to boost::placeholders::_1, so it would be ambiguous
-  initial_pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
+  initial_pose_sub_ = this->create_tilde_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
     "initialpose", 10,
     std::bind(&PoseInitializer::callbackInitialPose, this, std::placeholders::_1));
-  map_points_sub_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+  map_points_sub_ = this->create_tilde_subscription<sensor_msgs::msg::PointCloud2>(
     "pointcloud_map", rclcpp::QoS{1}.transient_local(),
     std::bind(&PoseInitializer::callbackMapPoints, this, std::placeholders::_1));
-  gnss_pose_sub_ = this->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
+  gnss_pose_sub_ = this->create_tilde_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
     "gnss_pose_cov", 1,
     std::bind(&PoseInitializer::callbackGNSSPoseCov, this, std::placeholders::_1));
   pose_initialization_request_sub_ =
-    this->create_subscription<tier4_localization_msgs::msg::PoseInitializationRequest>(
+    this->create_tilde_subscription<tier4_localization_msgs::msg::PoseInitializationRequest>(
       "pose_initialization_request", rclcpp::QoS{1}.transient_local(),
       std::bind(&PoseInitializer::callbackPoseInitializationRequest, this, std::placeholders::_1));
 
   initial_pose_pub_ =
-    this->create_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>("initialpose3d", 10);
+    this->create_tilde_publisher<geometry_msgs::msg::PoseWithCovarianceStamped>("initialpose3d", 10);
 
   initialize_pose_service_group_ =
     create_callback_group(rclcpp::CallbackGroupType::MutuallyExclusive);

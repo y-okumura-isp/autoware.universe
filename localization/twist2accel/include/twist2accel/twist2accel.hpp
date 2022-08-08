@@ -37,13 +37,16 @@
 #include <string>
 #include <vector>
 
-class Twist2Accel : public rclcpp::Node
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
+class Twist2Accel : public tilde::TildeNode
 {
 public:
   Twist2Accel(const std::string & node_name, const rclcpp::NodeOptions & options);
 
 private:
-  rclcpp::Publisher<geometry_msgs::msg::AccelWithCovarianceStamped>::SharedPtr
+  tilde::TildePublisher<geometry_msgs::msg::AccelWithCovarianceStamped>::SharedPtr
     pub_accel_;  //!< @brief stop flag publisher
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr
     sub_odom_;  //!< @brief measurement odometry subscriber

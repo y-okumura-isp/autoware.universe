@@ -31,7 +31,7 @@
 #include <utility>
 
 LocalizationErrorMonitor::LocalizationErrorMonitor()
-: Node("localization_error_monitor"), updater_(this)
+: TildeNode("localization_error_monitor"), updater_(this)
 {
   scale_ = this->declare_parameter("scale", 3.0);
   error_ellipse_size_ = this->declare_parameter("error_ellipse_size", 1.0);
@@ -42,7 +42,7 @@ LocalizationErrorMonitor::LocalizationErrorMonitor()
   warn_ellipse_size_lateral_direction_ =
     this->declare_parameter("warn_ellipse_size_lateral_direction", 0.2);
 
-  pose_with_cov_sub_ = this->create_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
+  pose_with_cov_sub_ = this->create_tilde_subscription<geometry_msgs::msg::PoseWithCovarianceStamped>(
     "input/pose_with_cov", 1,
     std::bind(&LocalizationErrorMonitor::onPoseWithCovariance, this, std::placeholders::_1));
 
@@ -50,7 +50,7 @@ LocalizationErrorMonitor::LocalizationErrorMonitor()
   rclcpp::QoS durable_qos(1);
   durable_qos.transient_local();  // option for latching
   ellipse_marker_pub_ =
-    this->create_publisher<visualization_msgs::msg::Marker>("debug/ellipse_marker", durable_qos);
+    this->create_tilde_publisher<visualization_msgs::msg::Marker>("debug/ellipse_marker", durable_qos);
 
   updater_.setHardwareID("localization_error_monitor");
   updater_.add("localization_accuracy", this, &LocalizationErrorMonitor::checkLocalizationAccuracy);

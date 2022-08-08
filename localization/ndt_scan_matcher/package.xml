@@ -20,6 +20,8 @@
   <depend>ndt_pcl_modified</depend>
   <depend>pcl_conversions</depend>
   <depend>rclcpp</depend>
+  <depend>tilde</depend>
+  <depend>tilde_msg</depend>
   <depend>sensor_msgs</depend>
   <depend>std_msgs</depend>
   <depend>tf2</depend>
