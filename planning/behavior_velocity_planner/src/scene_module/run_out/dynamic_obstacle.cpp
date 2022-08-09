@@ -107,7 +107,7 @@ pcl::PointCloud<pcl::PointXYZ> extractObstaclePointsWithinPolygon(
 }
 }  // namespace
 
-DynamicObstacleCreatorForObject::DynamicObstacleCreatorForObject(rclcpp::Node & node)
+DynamicObstacleCreatorForObject::DynamicObstacleCreatorForObject(tilde::TildeNode & node)
 : DynamicObstacleCreator(node)
 {
 }
@@ -143,7 +143,7 @@ std::vector<DynamicObstacle> DynamicObstacleCreatorForObject::createDynamicObsta
 }
 
 DynamicObstacleCreatorForObjectWithoutPath::DynamicObstacleCreatorForObjectWithoutPath(
-  rclcpp::Node & node)
+  tilde::TildeNode & node)
 : DynamicObstacleCreator(node)
 {
 }
@@ -178,11 +178,11 @@ std::vector<DynamicObstacle> DynamicObstacleCreatorForObjectWithoutPath::createD
   return dynamic_obstacles;
 }
 
-DynamicObstacleCreatorForPoints::DynamicObstacleCreatorForPoints(rclcpp::Node & node)
+DynamicObstacleCreatorForPoints::DynamicObstacleCreatorForPoints(tilde::TildeNode & node)
 : DynamicObstacleCreator(node), tf_buffer_(node.get_clock()), tf_listener_(tf_buffer_)
 {
   using std::placeholders::_1;
-  sub_compare_map_filtered_pointcloud_ = node.create_subscription<sensor_msgs::msg::PointCloud2>(
+  sub_compare_map_filtered_pointcloud_ = node.create_tilde_subscription<sensor_msgs::msg::PointCloud2>(
     "~/input/compare_map_filtered_pointcloud", rclcpp::SensorDataQoS(),
     std::bind(&DynamicObstacleCreatorForPoints::onCompareMapFilteredPointCloud, this, _1));
 }

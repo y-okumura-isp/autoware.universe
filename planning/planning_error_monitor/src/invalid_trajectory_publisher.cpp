@@ -22,16 +22,16 @@ namespace planning_diagnostics
 {
 InvalidTrajectoryPublisherNode::InvalidTrajectoryPublisherNode(
   const rclcpp::NodeOptions & node_options)
-: Node("invalid_trajectory_publisher", node_options)
+: TildeNode("invalid_trajectory_publisher", node_options)
 {
   using std::placeholders::_1;
   using std::chrono_literals::operator""ms;
 
-  traj_sub_ = create_subscription<Trajectory>(
+  traj_sub_ = create_tilde_subscription<Trajectory>(
     "~/input/trajectory", 1,
     std::bind(&InvalidTrajectoryPublisherNode::onCurrentTrajectory, this, _1));
 
-  traj_pub_ = create_publisher<Trajectory>("~/output/trajectory", 1);
+  traj_pub_ = create_tilde_publisher<Trajectory>("~/output/trajectory", 1);
 
   timer_ = rclcpp::create_timer(
     this, get_clock(), 100ms, std::bind(&InvalidTrajectoryPublisherNode::onTimer, this));

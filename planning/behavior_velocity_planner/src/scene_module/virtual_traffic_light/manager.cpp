@@ -25,7 +25,7 @@ namespace behavior_velocity_planner
 {
 using lanelet::autoware::VirtualTrafficLight;
 
-VirtualTrafficLightModuleManager::VirtualTrafficLightModuleManager(rclcpp::Node & node)
+VirtualTrafficLightModuleManager::VirtualTrafficLightModuleManager(tilde::TildeNode & node)
 : SceneModuleManagerInterface(node, getModuleName())
 {
   const std::string ns(getModuleName());

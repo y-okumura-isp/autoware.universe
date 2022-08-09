@@ -26,12 +26,15 @@
 #include <functional>
 #include <memory>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_velocity_planner
 {
 class IntersectionModuleManager : public SceneModuleManagerInterfaceWithRTC
 {
 public:
-  explicit IntersectionModuleManager(rclcpp::Node & node);
+  explicit IntersectionModuleManager(tilde::TildeNode & node);
 
   const char * getModuleName() override { return "intersection"; }
 
@@ -47,7 +50,7 @@ private:
 class MergeFromPrivateModuleManager : public SceneModuleManagerInterface
 {
 public:
-  explicit MergeFromPrivateModuleManager(rclcpp::Node & node);
+  explicit MergeFromPrivateModuleManager(tilde::TildeNode & node);
 
   const char * getModuleName() override { return "merge_from_private"; }
 

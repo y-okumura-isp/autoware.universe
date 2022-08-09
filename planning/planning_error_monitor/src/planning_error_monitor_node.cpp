@@ -27,14 +27,14 @@ using tier4_autoware_utils::calcCurvature;
 using tier4_autoware_utils::calcDistance2d;
 
 PlanningErrorMonitorNode::PlanningErrorMonitorNode(const rclcpp::NodeOptions & node_options)
-: Node("planning_error_monitor", node_options)
+: TildeNode("planning_error_monitor", node_options)
 {
   using std::placeholders::_1;
   using std::chrono_literals::operator""ms;
 
   debug_marker_.initialize(this);
 
-  traj_sub_ = create_subscription<Trajectory>(
+  traj_sub_ = create_tilde_subscription<Trajectory>(
     "~/input/trajectory", 1, std::bind(&PlanningErrorMonitorNode::onCurrentTrajectory, this, _1));
 
   updater_.setHardwareID("planning_error_monitor");

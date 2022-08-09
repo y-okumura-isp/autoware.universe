@@ -157,7 +157,7 @@ double calcObjectMaxLength(const autoware_auto_perception_msgs::msg::Shape & sha
 namespace motion_planning
 {
 ObstacleCruisePlannerNode::ObstacleCruisePlannerNode(const rclcpp::NodeOptions & node_options)
-: Node("obstacle_cruise_planner", node_options),
+: TildeNode("obstacle_cruise_planner", node_options),
   self_pose_listener_(this),
   in_objects_ptr_(nullptr),
   lpf_acc_ptr_(nullptr),
@@ -166,30 +166,30 @@ ObstacleCruisePlannerNode::ObstacleCruisePlannerNode(const rclcpp::NodeOptions &
   using std::placeholders::_1;
 
   // subscriber
-  trajectory_sub_ = create_subscription<Trajectory>(
+  trajectory_sub_ = create_tilde_subscription<Trajectory>(
     "~/input/trajectory", rclcpp::QoS{1},
     std::bind(&ObstacleCruisePlannerNode::onTrajectory, this, _1));
-  smoothed_trajectory_sub_ = create_subscription<Trajectory>(
+  smoothed_trajectory_sub_ = create_tilde_subscription<Trajectory>(
     "/planning/scenario_planning/trajectory", rclcpp::QoS{1},
     std::bind(&ObstacleCruisePlannerNode::onSmoothedTrajectory, this, _1));
-  objects_sub_ = create_subscription<PredictedObjects>(
+  objects_sub_ = create_tilde_subscription<PredictedObjects>(
     "~/input/objects", rclcpp::QoS{1}, std::bind(&ObstacleCruisePlannerNode::onObjects, this, _1));
-  odom_sub_ = create_subscription<Odometry>(
+  odom_sub_ = create_tilde_subscription<Odometry>(
     "~/input/odometry", rclcpp::QoS{1},
     std::bind(&ObstacleCruisePlannerNode::onOdometry, this, std::placeholders::_1));
 
   // publisher
-  trajectory_pub_ = create_publisher<Trajectory>("~/output/trajectory", 1);
+  trajectory_pub_ = create_tilde_publisher<Trajectory>("~/output/trajectory", 1);
   vel_limit_pub_ =
-    create_publisher<VelocityLimit>("~/output/velocity_limit", rclcpp::QoS{1}.transient_local());
-  clear_vel_limit_pub_ = create_publisher<VelocityLimitClearCommand>(
+    create_tilde_publisher<VelocityLimit>("~/output/velocity_limit", rclcpp::QoS{1}.transient_local());
+  clear_vel_limit_pub_ = create_tilde_publisher<VelocityLimitClearCommand>(
     "~/output/clear_velocity_limit", rclcpp::QoS{1}.transient_local());
-  debug_calculation_time_pub_ = create_publisher<Float32Stamped>("~/debug/calculation_time", 1);
+  debug_calculation_time_pub_ = create_tilde_publisher<Float32Stamped>("~/debug/calculation_time", 1);
   debug_cruise_wall_marker_pub_ =
-    create_publisher<visualization_msgs::msg::MarkerArray>("~/debug/cruise_wall_marker", 1);
+    create_tilde_publisher<visualization_msgs::msg::MarkerArray>("~/debug/cruise_wall_marker", 1);
   debug_stop_wall_marker_pub_ =
-    create_publisher<visualization_msgs::msg::MarkerArray>("~/virtual_wall", 1);
-  debug_marker_pub_ = create_publisher<visualization_msgs::msg::MarkerArray>("~/debug/marker", 1);
+    create_tilde_publisher<visualization_msgs::msg::MarkerArray>("~/virtual_wall", 1);
+  debug_marker_pub_ = create_tilde_publisher<visualization_msgs::msg::MarkerArray>("~/debug/marker", 1);
 
   // longitudinal_info
   const auto longitudinal_info = [&]() {

@@ -214,7 +214,7 @@ std::tuple<std::vector<double>, std::vector<double>> calcVehicleCirclesInfo(
 }  // namespace
 
 ObstacleAvoidancePlanner::ObstacleAvoidancePlanner(const rclcpp::NodeOptions & node_options)
-: Node("obstacle_avoidance_planner", node_options),
+: TildeNode("obstacle_avoidance_planner", node_options),
   logger_ros_clock_(RCL_ROS_TIME),
   eb_solved_count_(0)
 {
@@ -225,46 +225,46 @@ ObstacleAvoidancePlanner::ObstacleAvoidancePlanner(const rclcpp::NodeOptions & n
   durable_qos.transient_local();
 
   // publisher to other nodes
-  traj_pub_ = create_publisher<autoware_auto_planning_msgs::msg::Trajectory>("~/output/path", 1);
+  traj_pub_ = create_tilde_publisher<autoware_auto_planning_msgs::msg::Trajectory>("~/output/path", 1);
 
   // debug publisher
-  debug_eb_traj_pub_ = create_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
+  debug_eb_traj_pub_ = create_tilde_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
     "~/debug/eb_trajectory", durable_qos);
-  debug_extended_fixed_traj_pub_ = create_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
+  debug_extended_fixed_traj_pub_ = create_tilde_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
     "~/debug/extended_fixed_traj", 1);
   debug_extended_non_fixed_traj_pub_ =
-    create_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
+    create_tilde_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
       "~/debug/extended_non_fixed_traj", 1);
   debug_mpt_fixed_traj_pub_ =
-    create_publisher<autoware_auto_planning_msgs::msg::Trajectory>("~/debug/mpt_fixed_traj", 1);
+    create_tilde_publisher<autoware_auto_planning_msgs::msg::Trajectory>("~/debug/mpt_fixed_traj", 1);
   debug_mpt_ref_traj_pub_ =
-    create_publisher<autoware_auto_planning_msgs::msg::Trajectory>("~/debug/mpt_ref_traj", 1);
+    create_tilde_publisher<autoware_auto_planning_msgs::msg::Trajectory>("~/debug/mpt_ref_traj", 1);
   debug_mpt_traj_pub_ =
-    create_publisher<autoware_auto_planning_msgs::msg::Trajectory>("~/debug/mpt_traj", 1);
+    create_tilde_publisher<autoware_auto_planning_msgs::msg::Trajectory>("~/debug/mpt_traj", 1);
   debug_markers_pub_ =
-    create_publisher<visualization_msgs::msg::MarkerArray>("~/debug/marker", durable_qos);
+    create_tilde_publisher<visualization_msgs::msg::MarkerArray>("~/debug/marker", durable_qos);
   debug_wall_markers_pub_ =
-    create_publisher<visualization_msgs::msg::MarkerArray>("~/debug/wall_marker", durable_qos);
+    create_tilde_publisher<visualization_msgs::msg::MarkerArray>("~/debug/wall_marker", durable_qos);
   debug_clearance_map_pub_ =
-    create_publisher<nav_msgs::msg::OccupancyGrid>("~/debug/clearance_map", durable_qos);
+    create_tilde_publisher<nav_msgs::msg::OccupancyGrid>("~/debug/clearance_map", durable_qos);
   debug_object_clearance_map_pub_ =
-    create_publisher<nav_msgs::msg::OccupancyGrid>("~/debug/object_clearance_map", durable_qos);
+    create_tilde_publisher<nav_msgs::msg::OccupancyGrid>("~/debug/object_clearance_map", durable_qos);
   debug_area_with_objects_pub_ =
-    create_publisher<nav_msgs::msg::OccupancyGrid>("~/debug/area_with_objects", durable_qos);
+    create_tilde_publisher<nav_msgs::msg::OccupancyGrid>("~/debug/area_with_objects", durable_qos);
   debug_msg_pub_ =
-    create_publisher<tier4_debug_msgs::msg::StringStamped>("~/debug/calculation_time", 1);
+    create_tilde_publisher<tier4_debug_msgs::msg::StringStamped>("~/debug/calculation_time", 1);
 
   // subscriber
-  path_sub_ = create_subscription<autoware_auto_planning_msgs::msg::Path>(
+  path_sub_ = create_tilde_subscription<autoware_auto_planning_msgs::msg::Path>(
     "~/input/path", rclcpp::QoS{1},
     std::bind(&ObstacleAvoidancePlanner::pathCallback, this, std::placeholders::_1));
-  odom_sub_ = create_subscription<nav_msgs::msg::Odometry>(
+  odom_sub_ = create_tilde_subscription<nav_msgs::msg::Odometry>(
     "/localization/kinematic_state", rclcpp::QoS{1},
     std::bind(&ObstacleAvoidancePlanner::odomCallback, this, std::placeholders::_1));
-  objects_sub_ = create_subscription<autoware_auto_perception_msgs::msg::PredictedObjects>(
+  objects_sub_ = create_tilde_subscription<autoware_auto_perception_msgs::msg::PredictedObjects>(
     "~/input/objects", rclcpp::QoS{10},
     std::bind(&ObstacleAvoidancePlanner::objectsCallback, this, std::placeholders::_1));
-  is_avoidance_sub_ = create_subscription<tier4_planning_msgs::msg::EnableAvoidance>(
+  is_avoidance_sub_ = create_tilde_subscription<tier4_planning_msgs::msg::EnableAvoidance>(
     "/planning/scenario_planning/lane_driving/obstacle_avoidance_approval", rclcpp::QoS{10},
     std::bind(&ObstacleAvoidancePlanner::enableAvoidanceCallback, this, std::placeholders::_1));
 

@@ -23,12 +23,12 @@
 namespace planning_diagnostics
 {
 MotionEvaluatorNode::MotionEvaluatorNode(const rclcpp::NodeOptions & node_options)
-: Node("motion_evaluator", node_options)
+: TildeNode("motion_evaluator", node_options)
 {
   tf_buffer_ptr_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
   tf_listener_ptr_ = std::make_unique<tf2_ros::TransformListener>(*tf_buffer_ptr_);
 
-  twist_sub_ = create_subscription<nav_msgs::msg::Odometry>(
+  twist_sub_ = create_tilde_subscription<nav_msgs::msg::Odometry>(
     "~/input/twist", rclcpp::QoS{1},
     std::bind(&MotionEvaluatorNode::onOdom, this, std::placeholders::_1));
 

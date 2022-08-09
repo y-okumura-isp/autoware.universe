@@ -28,6 +28,9 @@
 #include <limits>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace motion_velocity_smoother
 {
 using autoware_auto_planning_msgs::msg::TrajectoryPoint;

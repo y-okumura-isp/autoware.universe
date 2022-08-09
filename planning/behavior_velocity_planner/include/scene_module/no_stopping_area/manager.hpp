@@ -24,12 +24,15 @@
 #include <functional>
 #include <memory>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_velocity_planner
 {
 class NoStoppingAreaModuleManager : public SceneModuleManagerInterfaceWithRTC
 {
 public:
-  explicit NoStoppingAreaModuleManager(rclcpp::Node & node);
+  explicit NoStoppingAreaModuleManager(tilde::TildeNode & node);
 
   const char * getModuleName() override { return "no_stopping_area"; }
 

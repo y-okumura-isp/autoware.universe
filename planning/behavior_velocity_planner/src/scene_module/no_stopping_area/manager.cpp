@@ -29,7 +29,7 @@ namespace behavior_velocity_planner
 {
 using lanelet::autoware::NoStoppingArea;
 
-NoStoppingAreaModuleManager::NoStoppingAreaModuleManager(rclcpp::Node & node)
+NoStoppingAreaModuleManager::NoStoppingAreaModuleManager(tilde::TildeNode & node)
 : SceneModuleManagerInterfaceWithRTC(node, getModuleName())
 {
   const std::string ns(getModuleName());

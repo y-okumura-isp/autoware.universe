@@ -158,7 +158,7 @@ pcl::PointCloud<pcl::PointXYZ> getTransformedPointCloud(
 }  // namespace
 
 CostmapGenerator::CostmapGenerator(const rclcpp::NodeOptions & node_options)
-: Node("costmap_generator", node_options), tf_buffer_(this->get_clock()), tf_listener_(tf_buffer_)
+: TildeNode("costmap_generator", node_options), tf_buffer_(this->get_clock()), tf_listener_(tf_buffer_)
 {
   // Parameters
   costmap_frame_ = this->declare_parameter<std::string>("costmap_frame", "map");
@@ -196,21 +196,21 @@ CostmapGenerator::CostmapGenerator(const rclcpp::NodeOptions & node_options)
 
   // Subscribers
   using std::placeholders::_1;
-  sub_objects_ = this->create_subscription<autoware_auto_perception_msgs::msg::PredictedObjects>(
+  sub_objects_ = this->create_tilde_subscription<autoware_auto_perception_msgs::msg::PredictedObjects>(
     "~/input/objects", 1, std::bind(&CostmapGenerator::onObjects, this, _1));
-  sub_points_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+  sub_points_ = this->create_tilde_subscription<sensor_msgs::msg::PointCloud2>(
     "~/input/points_no_ground", rclcpp::SensorDataQoS(),
     std::bind(&CostmapGenerator::onPoints, this, _1));
-  sub_lanelet_bin_map_ = this->create_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
+  sub_lanelet_bin_map_ = this->create_tilde_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
     "~/input/vector_map", rclcpp::QoS{1}.transient_local(),
     std::bind(&CostmapGenerator::onLaneletMapBin, this, _1));
-  sub_scenario_ = this->create_subscription<tier4_planning_msgs::msg::Scenario>(
+  sub_scenario_ = this->create_tilde_subscription<tier4_planning_msgs::msg::Scenario>(
     "~/input/scenario", 1, std::bind(&CostmapGenerator::onScenario, this, _1));
 
   // Publishers
-  pub_costmap_ = this->create_publisher<grid_map_msgs::msg::GridMap>("~/output/grid_map", 1);
+  pub_costmap_ = this->create_tilde_publisher<grid_map_msgs::msg::GridMap>("~/output/grid_map", 1);
   pub_occupancy_grid_ =
-    this->create_publisher<nav_msgs::msg::OccupancyGrid>("~/output/occupancy_grid", 1);
+    this->create_tilde_publisher<nav_msgs::msg::OccupancyGrid>("~/output/occupancy_grid", 1);
 
   // Timer
   const auto period_ns = rclcpp::Rate(update_rate_).period();

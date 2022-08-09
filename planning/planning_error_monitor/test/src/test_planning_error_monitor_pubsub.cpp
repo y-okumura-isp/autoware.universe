@@ -31,18 +31,18 @@ using diagnostic_msgs::msg::DiagnosticArray;
 using diagnostic_msgs::msg::DiagnosticStatus;
 using planning_diagnostics::PlanningErrorMonitorNode;
 
-class PubSubManager : public rclcpp::Node
+class PubSubManager : public tilde::TildeNode
 {
 public:
-  PubSubManager() : Node("test_pub_sub")
+  PubSubManager() : TildeNode("test_pub_sub")
   {
-    traj_pub_ = create_publisher<Trajectory>("/planning_error_monitor/input/trajectory", 1);
-    diag_sub_ = create_subscription<DiagnosticArray>(
+    traj_pub_ = create_tilde_publisher<Trajectory>("/planning_error_monitor/input/trajectory", 1);
+    diag_sub_ = create_tilde_subscription<DiagnosticArray>(
       "/diagnostics", 1,
       [this](const DiagnosticArray::ConstSharedPtr msg) { received_diags_.push_back(msg); });
   }
 
-  rclcpp::Publisher<Trajectory>::SharedPtr traj_pub_;
+  tilde::TildePublisher<Trajectory>::SharedPtr traj_pub_;
   rclcpp::Subscription<DiagnosticArray>::SharedPtr diag_sub_;
 
   std::vector<DiagnosticArray::ConstSharedPtr> received_diags_;

@@ -36,6 +36,9 @@
 #include <tuple>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 using autoware_auto_perception_msgs::msg::ObjectClassification;
 using autoware_auto_perception_msgs::msg::PredictedPath;
 using autoware_auto_planning_msgs::msg::TrajectoryPoint;
@@ -45,7 +48,7 @@ class OptimizationBasedPlanner : public PlannerInterface
 {
 public:
   OptimizationBasedPlanner(
-    rclcpp::Node & node, const LongitudinalInfo & longitudinal_info,
+    tilde::TildeNode & node, const LongitudinalInfo & longitudinal_info,
     const vehicle_info_util::VehicleInfo & vehicle_info);
 
   Trajectory generateCruiseTrajectory(
@@ -139,11 +142,11 @@ private:
   std::shared_ptr<VelocityOptimizer> velocity_optimizer_ptr_;
 
   // Publisher
-  rclcpp::Publisher<Trajectory>::SharedPtr boundary_pub_;
-  rclcpp::Publisher<Trajectory>::SharedPtr optimized_sv_pub_;
-  rclcpp::Publisher<Trajectory>::SharedPtr optimized_st_graph_pub_;
-  rclcpp::Publisher<Float32Stamped>::SharedPtr debug_calculation_time_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_wall_marker_pub_;
+  tilde::TildePublisher<Trajectory>::SharedPtr boundary_pub_;
+  tilde::TildePublisher<Trajectory>::SharedPtr optimized_sv_pub_;
+  tilde::TildePublisher<Trajectory>::SharedPtr optimized_st_graph_pub_;
+  tilde::TildePublisher<Float32Stamped>::SharedPtr debug_calculation_time_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_wall_marker_pub_;
 
   // Resampling Parameter
   double resampling_s_interval_;

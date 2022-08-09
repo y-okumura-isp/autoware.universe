@@ -35,6 +35,9 @@
 #include <utility>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_path_planner
 {
 class AvoidanceModule : public SceneModuleInterface

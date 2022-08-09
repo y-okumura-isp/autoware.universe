@@ -24,12 +24,15 @@
 #include <functional>
 #include <memory>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_velocity_planner
 {
 class DetectionAreaModuleManager : public SceneModuleManagerInterfaceWithRTC
 {
 public:
-  explicit DetectionAreaModuleManager(rclcpp::Node & node);
+  explicit DetectionAreaModuleManager(tilde::TildeNode & node);
 
   const char * getModuleName() override { return "detection_area"; }
 

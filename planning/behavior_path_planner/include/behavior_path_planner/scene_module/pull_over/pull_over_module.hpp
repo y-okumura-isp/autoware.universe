@@ -38,6 +38,9 @@
 #include <utility>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 using nav_msgs::msg::OccupancyGrid;
 
 namespace behavior_path_planner
@@ -145,7 +148,7 @@ class PullOverModule : public SceneModuleInterface
 {
 public:
   PullOverModule(
-    const std::string & name, rclcpp::Node & node, const PullOverParameters & parameters);
+    const std::string & name, tilde::TildeNode & node, const PullOverParameters & parameters);
 
   BehaviorModuleOutput run() override;
 
@@ -172,12 +175,12 @@ private:
   double check_distance_ = 100.0;
 
   rclcpp::Subscription<OccupancyGrid>::SharedPtr occupancy_grid_sub_;
-  rclcpp::Publisher<PoseStamped>::SharedPtr Cr_pub_;
-  rclcpp::Publisher<PoseStamped>::SharedPtr Cl_pub_;
-  rclcpp::Publisher<PoseStamped>::SharedPtr start_pose_pub_;
-  rclcpp::Publisher<PoseStamped>::SharedPtr goal_pose_pub_;
-  rclcpp::Publisher<PoseArray>::SharedPtr path_pose_array_pub_;
-  rclcpp::Publisher<MarkerArray>::SharedPtr parking_area_pub_;
+  tilde::TildePublisher<PoseStamped>::SharedPtr Cr_pub_;
+  tilde::TildePublisher<PoseStamped>::SharedPtr Cl_pub_;
+  tilde::TildePublisher<PoseStamped>::SharedPtr start_pose_pub_;
+  tilde::TildePublisher<PoseStamped>::SharedPtr goal_pose_pub_;
+  tilde::TildePublisher<PoseArray>::SharedPtr path_pose_array_pub_;
+  tilde::TildePublisher<MarkerArray>::SharedPtr parking_area_pub_;
   rclcpp::Clock::SharedPtr clock_;
 
   PUllOverStatus status_;

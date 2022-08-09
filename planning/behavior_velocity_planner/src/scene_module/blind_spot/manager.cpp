@@ -25,7 +25,7 @@
 
 namespace behavior_velocity_planner
 {
-BlindSpotModuleManager::BlindSpotModuleManager(rclcpp::Node & node)
+BlindSpotModuleManager::BlindSpotModuleManager(tilde::TildeNode & node)
 : SceneModuleManagerInterfaceWithRTC(node, getModuleName())
 {
   const std::string ns(getModuleName());

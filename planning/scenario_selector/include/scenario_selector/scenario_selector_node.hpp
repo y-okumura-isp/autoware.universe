@@ -42,7 +42,10 @@
 #include <memory>
 #include <string>
 
-class ScenarioSelectorNode : public rclcpp::Node
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
+class ScenarioSelectorNode : public tilde::TildeNode
 {
 public:
   explicit ScenarioSelectorNode(const rclcpp::NodeOptions & node_options);
@@ -77,8 +80,8 @@ private:
   rclcpp::Subscription<autoware_auto_planning_msgs::msg::Trajectory>::SharedPtr
     sub_parking_trajectory_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_parking_state_;
-  rclcpp::Publisher<autoware_auto_planning_msgs::msg::Trajectory>::SharedPtr pub_trajectory_;
-  rclcpp::Publisher<tier4_planning_msgs::msg::Scenario>::SharedPtr pub_scenario_;
+  tilde::TildePublisher<autoware_auto_planning_msgs::msg::Trajectory>::SharedPtr pub_trajectory_;
+  tilde::TildePublisher<tier4_planning_msgs::msg::Scenario>::SharedPtr pub_scenario_;
 
   autoware_auto_planning_msgs::msg::Trajectory::ConstSharedPtr lane_driving_trajectory_;
   autoware_auto_planning_msgs::msg::Trajectory::ConstSharedPtr parking_trajectory_;

@@ -42,6 +42,9 @@
 #include <string>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 using autoware_auto_perception_msgs::msg::ObjectClassification;
 using autoware_auto_perception_msgs::msg::PredictedObject;
 using autoware_auto_perception_msgs::msg::PredictedObjects;
@@ -57,7 +60,7 @@ using vehicle_info_util::VehicleInfo;
 
 namespace motion_planning
 {
-class ObstacleCruisePlannerNode : public rclcpp::Node
+class ObstacleCruisePlannerNode : public tilde::TildeNode
 {
 public:
   explicit ObstacleCruisePlannerNode(const rclcpp::NodeOptions & node_options);
@@ -122,13 +125,13 @@ private:
   OnSetParametersCallbackHandle::SharedPtr set_param_res_;
 
   // publisher
-  rclcpp::Publisher<Trajectory>::SharedPtr trajectory_pub_;
-  rclcpp::Publisher<VelocityLimit>::SharedPtr vel_limit_pub_;
-  rclcpp::Publisher<VelocityLimitClearCommand>::SharedPtr clear_vel_limit_pub_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_marker_pub_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_cruise_wall_marker_pub_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_stop_wall_marker_pub_;
-  rclcpp::Publisher<Float32Stamped>::SharedPtr debug_calculation_time_pub_;
+  tilde::TildePublisher<Trajectory>::SharedPtr trajectory_pub_;
+  tilde::TildePublisher<VelocityLimit>::SharedPtr vel_limit_pub_;
+  tilde::TildePublisher<VelocityLimitClearCommand>::SharedPtr clear_vel_limit_pub_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_marker_pub_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_cruise_wall_marker_pub_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_stop_wall_marker_pub_;
+  tilde::TildePublisher<Float32Stamped>::SharedPtr debug_calculation_time_pub_;
 
   // subscriber
   rclcpp::Subscription<Trajectory>::SharedPtr trajectory_sub_;

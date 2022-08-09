@@ -53,7 +53,7 @@ inline tf2::Vector3 getTransVector3(
 }  // namespace
 
 OptimizationBasedPlanner::OptimizationBasedPlanner(
-  rclcpp::Node & node, const LongitudinalInfo & longitudinal_info,
+  tilde::TildeNode & node, const LongitudinalInfo & longitudinal_info,
   const vehicle_info_util::VehicleInfo & vehicle_info)
 : PlannerInterface(node, longitudinal_info, vehicle_info)
 {
@@ -104,12 +104,12 @@ OptimizationBasedPlanner::OptimizationBasedPlanner(
     over_a_weight, over_j_weight);
 
   // publisher
-  optimized_sv_pub_ = node.create_publisher<Trajectory>("~/optimized_sv_trajectory", 1);
-  optimized_st_graph_pub_ = node.create_publisher<Trajectory>("~/optimized_st_graph", 1);
-  boundary_pub_ = node.create_publisher<Trajectory>("~/boundary", 1);
-  debug_calculation_time_ = node.create_publisher<Float32Stamped>("~/calculation_time", 1);
+  optimized_sv_pub_ = node.create_tilde_publisher<Trajectory>("~/optimized_sv_trajectory", 1);
+  optimized_st_graph_pub_ = node.create_tilde_publisher<Trajectory>("~/optimized_st_graph", 1);
+  boundary_pub_ = node.create_tilde_publisher<Trajectory>("~/boundary", 1);
+  debug_calculation_time_ = node.create_tilde_publisher<Float32Stamped>("~/calculation_time", 1);
   debug_wall_marker_pub_ =
-    node.create_publisher<visualization_msgs::msg::MarkerArray>("~/debug/wall_marker", 1);
+    node.create_tilde_publisher<visualization_msgs::msg::MarkerArray>("~/debug/wall_marker", 1);
 }
 
 Trajectory OptimizationBasedPlanner::generateCruiseTrajectory(

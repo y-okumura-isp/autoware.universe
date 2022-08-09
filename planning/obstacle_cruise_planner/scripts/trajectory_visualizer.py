@@ -66,10 +66,10 @@ class TrajectoryVisualizer(Node):
         self.boundary = Trajectory()
         self.optimized_st_graph = Trajectory()
 
-        self.sub_localization_twist = self.create_subscription(
+        self.sub_localization_twist = self.create_tilde_subscription(
             Odometry, "/localization/kinematic_state", self.CallbackLocalizationOdom, 1
         )
-        self.sub_vehicle_twist = self.create_subscription(
+        self.sub_vehicle_twist = self.create_tilde_subscription(
             TwistStamped, "/vehicle/status/twist", self.CallbackVehicleTwist, 1
         )
 

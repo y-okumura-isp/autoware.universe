@@ -41,6 +41,9 @@
 #include <utility>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace surround_obstacle_checker
 {
 
@@ -57,7 +60,7 @@ using Obstacle = std::pair<double /* distance */, geometry_msgs::msg::Point>;
 
 enum class State { PASS, STOP };
 
-class SurroundObstacleCheckerNode : public rclcpp::Node
+class SurroundObstacleCheckerNode : public tilde::TildeNode
 {
 public:
   explicit SurroundObstacleCheckerNode(const rclcpp::NodeOptions & node_options);
@@ -104,9 +107,9 @@ private:
   rclcpp::Subscription<sensor_msgs::msg::PointCloud2>::SharedPtr sub_pointcloud_;
   rclcpp::Subscription<PredictedObjects>::SharedPtr sub_dynamic_objects_;
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr sub_odometry_;
-  rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticStatus>::SharedPtr pub_stop_reason_;
-  rclcpp::Publisher<VelocityLimitClearCommand>::SharedPtr pub_clear_velocity_limit_;
-  rclcpp::Publisher<VelocityLimit>::SharedPtr pub_velocity_limit_;
+  tilde::TildePublisher<diagnostic_msgs::msg::DiagnosticStatus>::SharedPtr pub_stop_reason_;
+  tilde::TildePublisher<VelocityLimitClearCommand>::SharedPtr pub_clear_velocity_limit_;
+  tilde::TildePublisher<VelocityLimit>::SharedPtr pub_velocity_limit_;
 
   // stop checker
   std::unique_ptr<VehicleStopChecker> vehicle_stop_checker_;

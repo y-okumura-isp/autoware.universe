@@ -31,9 +31,12 @@
 #include <geometry_msgs/msg/pose_stamped.hpp>
 #include <geometry_msgs/msg/pose_with_covariance_stamped.hpp>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace mission_planner
 {
-class MissionPlanner : public rclcpp::Node
+class MissionPlanner : public tilde::TildeNode
 {
 protected:
   MissionPlanner(const std::string & node_name, const rclcpp::NodeOptions & node_options);
@@ -45,7 +48,7 @@ protected:
   std::string base_link_frame_;
   std::string map_frame_;
 
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_publisher_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr marker_publisher_;
 
   virtual bool isRoutingGraphReady() const = 0;
   virtual autoware_auto_planning_msgs::msg::HADMapRoute planRoute() = 0;
@@ -54,7 +57,7 @@ protected:
   virtual void publishRoute(const autoware_auto_planning_msgs::msg::HADMapRoute & route) const;
 
 private:
-  rclcpp::Publisher<autoware_auto_planning_msgs::msg::HADMapRoute>::SharedPtr route_publisher_;
+  tilde::TildePublisher<autoware_auto_planning_msgs::msg::HADMapRoute>::SharedPtr route_publisher_;
   rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr goal_subscriber_;
   rclcpp::Subscription<geometry_msgs::msg::PoseStamped>::SharedPtr checkpoint_subscriber_;
 

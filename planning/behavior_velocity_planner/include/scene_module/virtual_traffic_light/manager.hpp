@@ -24,12 +24,15 @@
 #include <functional>
 #include <memory>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_velocity_planner
 {
 class VirtualTrafficLightModuleManager : public SceneModuleManagerInterface
 {
 public:
-  explicit VirtualTrafficLightModuleManager(rclcpp::Node & node);
+  explicit VirtualTrafficLightModuleManager(tilde::TildeNode & node);
 
   const char * getModuleName() override { return "virtual_traffic_light"; }
 

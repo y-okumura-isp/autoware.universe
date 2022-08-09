@@ -54,12 +54,12 @@ RunOutDebug::TextWithPosition createDebugText(
 
 }  // namespace
 
-RunOutDebug::RunOutDebug(rclcpp::Node & node) : node_(node)
+RunOutDebug::RunOutDebug(tilde::TildeNode & node) : node_(node)
 {
   pub_debug_values_ =
-    node.create_publisher<Float32MultiArrayStamped>("~/run_out/debug/debug_values", 1);
-  pub_accel_reason_ = node.create_publisher<Int32Stamped>("~/run_out/debug/accel_reason", 1);
-  pub_debug_trajectory_ = node.create_publisher<Trajectory>("~/run_out/debug/trajectory", 1);
+    node.create_tilde_publisher<Float32MultiArrayStamped>("~/run_out/debug/debug_values", 1);
+  pub_accel_reason_ = node.create_tilde_publisher<Int32Stamped>("~/run_out/debug/accel_reason", 1);
+  pub_debug_trajectory_ = node.create_tilde_publisher<Trajectory>("~/run_out/debug/trajectory", 1);
 }
 
 void RunOutDebug::pushDebugPoints(const pcl::PointXYZ & debug_point)

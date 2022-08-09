@@ -26,7 +26,7 @@ namespace behavior_velocity_planner
 {
 using lanelet::TrafficLight;
 
-TrafficLightModuleManager::TrafficLightModuleManager(rclcpp::Node & node)
+TrafficLightModuleManager::TrafficLightModuleManager(tilde::TildeNode & node)
 : SceneModuleManagerInterfaceWithRTC(node, getModuleName())
 {
   const std::string ns(getModuleName());
@@ -36,7 +36,7 @@ TrafficLightModuleManager::TrafficLightModuleManager(rclcpp::Node & node)
     node.declare_parameter(ns + ".external_tl_state_timeout", 1.0);
   planner_param_.enable_pass_judge = node.declare_parameter(ns + ".enable_pass_judge", true);
   planner_param_.yellow_lamp_period = node.declare_parameter(ns + ".yellow_lamp_period", 2.75);
-  pub_tl_state_ = node.create_publisher<autoware_auto_perception_msgs::msg::LookingTrafficSignal>(
+  pub_tl_state_ = node.create_tilde_publisher<autoware_auto_perception_msgs::msg::LookingTrafficSignal>(
     "~/output/traffic_signal", 1);
 }
 

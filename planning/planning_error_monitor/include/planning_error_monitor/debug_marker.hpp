@@ -25,20 +25,23 @@
 #include <string>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 class PlanningErrorMonitorDebugNode
 {
 public:
   PlanningErrorMonitorDebugNode();
 
-  void initialize(rclcpp::Node * node);
+  void initialize(tilde::TildeNode * node);
   void pushPoseMarker(const geometry_msgs::msg::Pose & pose, const std::string & ns, int id = 0);
   void clearPoseMarker(const std::string & ns);
   void publish();
 
 private:
-  rclcpp::Node * node_;
+  tilde::TildeNode * node_;
   visualization_msgs::msg::MarkerArray marker_array_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_viz_pub_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_viz_pub_;
   std::map<std::string, int> marker_id_;
   bool initialized = false;
 

@@ -22,6 +22,8 @@
   <depend>osqp_interface</depend>
   <depend>perception_utils</depend>
   <depend>rclcpp</depend>
+  <depend>tilde</depend>
+  <depend>tilde_msg</depend>
   <depend>rclcpp_components</depend>
   <depend>signal_processing</depend>
   <depend>std_msgs</depend>

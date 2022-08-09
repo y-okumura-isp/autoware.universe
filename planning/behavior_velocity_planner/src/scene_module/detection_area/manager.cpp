@@ -28,7 +28,7 @@ namespace behavior_velocity_planner
 {
 using lanelet::autoware::DetectionArea;
 
-DetectionAreaModuleManager::DetectionAreaModuleManager(rclcpp::Node & node)
+DetectionAreaModuleManager::DetectionAreaModuleManager(tilde::TildeNode & node)
 : SceneModuleManagerInterfaceWithRTC(node, getModuleName())
 {
   const std::string ns(getModuleName());

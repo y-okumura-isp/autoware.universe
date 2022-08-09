@@ -27,18 +27,18 @@
 namespace planning_diagnostics
 {
 PlanningEvaluatorNode::PlanningEvaluatorNode(const rclcpp::NodeOptions & node_options)
-: Node("planning_evaluator", node_options)
+: TildeNode("planning_evaluator", node_options)
 {
   using std::placeholders::_1;
 
-  traj_sub_ = create_subscription<Trajectory>(
+  traj_sub_ = create_tilde_subscription<Trajectory>(
     "~/input/trajectory", 1, std::bind(&PlanningEvaluatorNode::onTrajectory, this, _1));
 
-  ref_sub_ = create_subscription<Trajectory>(
+  ref_sub_ = create_tilde_subscription<Trajectory>(
     "~/input/reference_trajectory", 1,
     std::bind(&PlanningEvaluatorNode::onReferenceTrajectory, this, _1));
 
-  objects_sub_ = create_subscription<PredictedObjects>(
+  objects_sub_ = create_tilde_subscription<PredictedObjects>(
     "~/input/objects", 1, std::bind(&PlanningEvaluatorNode::onObjects, this, _1));
   tf_buffer_ = std::make_unique<tf2_ros::Buffer>(this->get_clock());
   transform_listener_ = std::make_shared<tf2_ros::TransformListener>(*tf_buffer_);
@@ -57,7 +57,7 @@ PlanningEvaluatorNode::PlanningEvaluatorNode(const rclcpp::NodeOptions & node_op
   ego_frame_str_ = declare_parameter<std::string>("ego_frame");
 
   // List of metrics to calculate and publish
-  metrics_pub_ = create_publisher<DiagnosticArray>("~/metrics", 1);
+  metrics_pub_ = create_tilde_publisher<DiagnosticArray>("~/metrics", 1);
   for (const std::string & selected_metric :
        declare_parameter<std::vector<std::string>>("selected_metrics")) {
     Metric metric = str_to_metric.at(selected_metric);

@@ -34,6 +34,9 @@
 #include <string>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace planning_debug_tools
 {
 using autoware_auto_planning_msgs::msg::Path;
@@ -46,16 +49,16 @@ template <typename T>
 class TrajectoryAnalyzer
 {
   using SubscriberType = typename rclcpp::Subscription<T>::SharedPtr;
-  using PublisherType = rclcpp::Publisher<TrajectoryDebugInfo>::SharedPtr;
+  using PublisherType = tilde::TildePublisher<TrajectoryDebugInfo>::SharedPtr;
   using T_ConstSharedPtr = typename T::ConstSharedPtr;
 
 public:
-  TrajectoryAnalyzer(rclcpp::Node * node, const std::string & sub_name)
+  TrajectoryAnalyzer(tilde::TildeNode * node, const std::string & sub_name)
   : node_(node), name_(sub_name)
   {
     const auto pub_name = sub_name + "/debug_info";
-    pub_ = node->create_publisher<TrajectoryDebugInfo>(pub_name, 1);
-    sub_ = node->create_subscription<T>(
+    pub_ = node->create_tilde_publisher<TrajectoryDebugInfo>(pub_name, 1);
+    sub_ = node->create_tilde_subscription<T>(
       sub_name, 1, [this](const T_ConstSharedPtr msg) { run(msg->points); });
   }
   ~TrajectoryAnalyzer() = default;
@@ -70,7 +73,7 @@ public:
   auto operator=(TrajectoryAnalyzer &&) -> TrajectoryAnalyzer & = delete;       // move assignment
 
 public:
-  std::shared_ptr<rclcpp::Node> node_;
+  std::shared_ptr<tilde::TildeNode> node_;
   std::string name_;
   PublisherType pub_;
   SubscriberType sub_;
@@ -101,7 +104,7 @@ public:
   }
 };
 
-class TrajectoryAnalyzerNode : public rclcpp::Node
+class TrajectoryAnalyzerNode : public tilde::TildeNode
 {
 public:
   explicit TrajectoryAnalyzerNode(const rclcpp::NodeOptions & options);

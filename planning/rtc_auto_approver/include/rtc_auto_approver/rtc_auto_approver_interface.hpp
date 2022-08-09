@@ -30,6 +30,9 @@
 #include <string>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace rtc_auto_approver
 {
 using tier4_rtc_msgs::msg::Command;
@@ -46,7 +49,7 @@ class RTCAutoApproverInterface
 {
 public:
   RTCAutoApproverInterface(
-    rclcpp::Node * node, const std::string & name, const bool default_enable);
+    tilde::TildeNode * node, const std::string & name, const bool default_enable);
 
 private:
   void onEnableService(

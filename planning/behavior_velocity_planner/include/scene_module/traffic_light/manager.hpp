@@ -24,12 +24,15 @@
 #include <functional>
 #include <memory>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_velocity_planner
 {
 class TrafficLightModuleManager : public SceneModuleManagerInterfaceWithRTC
 {
 public:
-  explicit TrafficLightModuleManager(rclcpp::Node & node);
+  explicit TrafficLightModuleManager(tilde::TildeNode & node);
 
   const char * getModuleName() override { return "traffic_light"; }
 
@@ -44,7 +47,7 @@ private:
   void modifyPathVelocity(autoware_auto_planning_msgs::msg::PathWithLaneId * path) override;
 
   // Debug
-  rclcpp::Publisher<autoware_auto_perception_msgs::msg::LookingTrafficSignal>::SharedPtr
+  tilde::TildePublisher<autoware_auto_perception_msgs::msg::LookingTrafficSignal>::SharedPtr
     pub_tl_state_;
 
   boost::optional<int> first_ref_stop_path_point_index_;

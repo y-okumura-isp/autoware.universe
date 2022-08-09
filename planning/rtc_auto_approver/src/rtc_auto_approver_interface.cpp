@@ -17,14 +17,14 @@
 namespace rtc_auto_approver
 {
 RTCAutoApproverInterface::RTCAutoApproverInterface(
-  rclcpp::Node * node, const std::string & name, const bool default_enable)
+  tilde::TildeNode * node, const std::string & name, const bool default_enable)
 : enabled_{default_enable}
 {
   using std::placeholders::_1;
   using std::placeholders::_2;
 
   // Subscriber
-  status_sub_ = node->create_subscription<CooperateStatusArray>(
+  status_sub_ = node->create_tilde_subscription<CooperateStatusArray>(
     name + "/cooperate_status", rclcpp::QoS(1),
     std::bind(&RTCAutoApproverInterface::onStatus, this, _1));
 

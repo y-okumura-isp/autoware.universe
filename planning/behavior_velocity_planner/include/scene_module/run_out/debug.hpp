@@ -18,6 +18,9 @@
 
 #include <string>
 #include <vector>
+
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
 namespace behavior_velocity_planner
 {
 using autoware_auto_planning_msgs::msg::Trajectory;
@@ -91,7 +94,7 @@ public:
     geometry_msgs::msg::Point position;
   };
 
-  explicit RunOutDebug(rclcpp::Node & node);
+  explicit RunOutDebug(tilde::TildeNode & node);
   ~RunOutDebug() {}
 
   void setDebugValues(const DebugValues::TYPE type, const double val)
@@ -124,10 +127,10 @@ private:
     const builtin_interfaces::msg::Time & current_time);
   void clearDebugMarker();
 
-  rclcpp::Node & node_;
-  rclcpp::Publisher<Float32MultiArrayStamped>::SharedPtr pub_debug_values_;
-  rclcpp::Publisher<Int32Stamped>::SharedPtr pub_accel_reason_;
-  rclcpp::Publisher<Trajectory>::SharedPtr pub_debug_trajectory_;
+  tilde::TildeNode & node_;
+  tilde::TildePublisher<Float32MultiArrayStamped>::SharedPtr pub_debug_values_;
+  tilde::TildePublisher<Int32Stamped>::SharedPtr pub_accel_reason_;
+  tilde::TildePublisher<Trajectory>::SharedPtr pub_debug_trajectory_;
   std::vector<geometry_msgs::msg::Point> debug_points_;
   std::vector<geometry_msgs::msg::Point> debug_points_red_;
   std::vector<geometry_msgs::msg::Point> debug_points_yellow_;

@@ -28,6 +28,9 @@
 
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace motion_planning
 {
 using autoware_auto_planning_msgs::msg::TrajectoryPoint;
@@ -36,7 +39,7 @@ class AdaptiveCruiseController
 {
 public:
   AdaptiveCruiseController(
-    rclcpp::Node * node, const double vehicle_width, const double vehicle_length,
+    tilde::TildeNode * node, const double vehicle_width, const double vehicle_length,
     const double baselink2front);
 
   void insertAdaptiveCruiseVelocity(
@@ -48,9 +51,9 @@ public:
     TrajectoryPoints * output_trajectory, const std_msgs::msg::Header trajectory_header);
 
 private:
-  rclcpp::Publisher<tier4_debug_msgs::msg::Float32MultiArrayStamped>::SharedPtr pub_debug_;
+  tilde::TildePublisher<tier4_debug_msgs::msg::Float32MultiArrayStamped>::SharedPtr pub_debug_;
 
-  rclcpp::Node * node_;
+  tilde::TildeNode * node_;
   /*
    * Parameter
    */

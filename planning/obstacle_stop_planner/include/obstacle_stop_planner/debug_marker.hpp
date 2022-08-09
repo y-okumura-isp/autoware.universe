@@ -34,6 +34,9 @@
 #define EIGEN_MPL2_ONLY
 #include <eigen3/Eigen/Core>
 #include <eigen3/Eigen/Geometry>
+
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
 namespace motion_planning
 {
 using tier4_debug_msgs::msg::Float32MultiArrayStamped;
@@ -92,7 +95,7 @@ private:
 class ObstacleStopPlannerDebugNode
 {
 public:
-  explicit ObstacleStopPlannerDebugNode(rclcpp::Node * node, const double base_link2front);
+  explicit ObstacleStopPlannerDebugNode(tilde::TildeNode * node, const double base_link2front);
   ~ObstacleStopPlannerDebugNode() {}
   bool pushPolygon(
     const std::vector<cv::Point2d> & polygon, const double z, const PolygonType & type);
@@ -111,11 +114,11 @@ public:
   void publish();
 
 private:
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr virtual_wall_pub_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_viz_pub_;
-  rclcpp::Publisher<tier4_planning_msgs::msg::StopReasonArray>::SharedPtr stop_reason_pub_;
-  rclcpp::Publisher<Float32MultiArrayStamped>::SharedPtr pub_debug_values_;
-  rclcpp::Node * node_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr virtual_wall_pub_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr debug_viz_pub_;
+  tilde::TildePublisher<tier4_planning_msgs::msg::StopReasonArray>::SharedPtr stop_reason_pub_;
+  tilde::TildePublisher<Float32MultiArrayStamped>::SharedPtr pub_debug_values_;
+  tilde::TildeNode * node_;
   double base_link2front_;
 
   std::shared_ptr<geometry_msgs::msg::Pose> stop_pose_ptr_;

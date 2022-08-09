@@ -51,18 +51,18 @@ using tier4_autoware_utils::transformPose;
 namespace behavior_path_planner
 {
 PullOverModule::PullOverModule(
-  const std::string & name, rclcpp::Node & node, const PullOverParameters & parameters)
+  const std::string & name, tilde::TildeNode & node, const PullOverParameters & parameters)
 : SceneModuleInterface{name, node}, parameters_{parameters}, clock_{node.get_clock()}
 {
   rtc_interface_ptr_ = std::make_shared<RTCInterface>(&node, "pull_over");
   goal_pose_pub_ =
-    node.create_publisher<PoseStamped>("/planning/scenario_planning/modified_goal", 1);
-  parking_area_pub_ = node.create_publisher<MarkerArray>("~/pull_over/debug/parking_area", 1);
+    node.create_tilde_publisher<PoseStamped>("/planning/scenario_planning/modified_goal", 1);
+  parking_area_pub_ = node.create_tilde_publisher<MarkerArray>("~/pull_over/debug/parking_area", 1);
   // Only for arc paths
-  Cl_pub_ = node.create_publisher<PoseStamped>("~/pull_over/debug/Cl", 1);
-  Cr_pub_ = node.create_publisher<PoseStamped>("~/pull_over/debug/Cr", 1);
-  start_pose_pub_ = node.create_publisher<PoseStamped>("~/pull_over/debug/start_pose", 1);
-  path_pose_array_pub_ = node.create_publisher<PoseArray>("~/pull_over/debug/path_pose_array", 1);
+  Cl_pub_ = node.create_tilde_publisher<PoseStamped>("~/pull_over/debug/Cl", 1);
+  Cr_pub_ = node.create_tilde_publisher<PoseStamped>("~/pull_over/debug/Cr", 1);
+  start_pose_pub_ = node.create_tilde_publisher<PoseStamped>("~/pull_over/debug/start_pose", 1);
+  path_pose_array_pub_ = node.create_tilde_publisher<PoseArray>("~/pull_over/debug/path_pose_array", 1);
 
   lane_departure_checker_ = std::make_unique<LaneDepartureChecker>();
   lane_departure_checker_->setVehicleInfo(

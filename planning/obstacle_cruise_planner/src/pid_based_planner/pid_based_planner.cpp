@@ -53,7 +53,7 @@ Float32MultiArrayStamped convertDebugValuesToMsg(
 }  // namespace
 
 PIDBasedPlanner::PIDBasedPlanner(
-  rclcpp::Node & node, const LongitudinalInfo & longitudinal_info,
+  tilde::TildeNode & node, const LongitudinalInfo & longitudinal_info,
   const vehicle_info_util::VehicleInfo & vehicle_info)
 : PlannerInterface(node, longitudinal_info, vehicle_info)
 {
@@ -83,7 +83,7 @@ PIDBasedPlanner::PIDBasedPlanner(
   lpf_cruise_ptr_ = std::make_shared<LowpassFilter1d>(lpf_cruise_gain);
 
   // publisher
-  debug_values_pub_ = node.create_publisher<Float32MultiArrayStamped>("~/debug/values", 1);
+  debug_values_pub_ = node.create_tilde_publisher<Float32MultiArrayStamped>("~/debug/values", 1);
 }
 
 Trajectory PIDBasedPlanner::generateCruiseTrajectory(

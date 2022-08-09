@@ -20,16 +20,19 @@
 #include <autoware_auto_planning_msgs/msg/had_map_route.hpp>
 #include <geometry_msgs/msg/pose_stamped.hpp>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace mission_planner
 {
-class GoalPoseVisualizer : public rclcpp::Node
+class GoalPoseVisualizer : public tilde::TildeNode
 {
 public:
   explicit GoalPoseVisualizer(const rclcpp::NodeOptions & node_options);
 
 private:
   rclcpp::Subscription<autoware_auto_planning_msgs::msg::HADMapRoute>::SharedPtr sub_route_;
-  rclcpp::Publisher<geometry_msgs::msg::PoseStamped>::SharedPtr pub_goal_pose_;
+  tilde::TildePublisher<geometry_msgs::msg::PoseStamped>::SharedPtr pub_goal_pose_;
 
   void echoBackRouteCallback(
     const autoware_auto_planning_msgs::msg::HADMapRoute::ConstSharedPtr msg);

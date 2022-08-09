@@ -11,6 +11,8 @@
   <buildtool_depend>ament_cmake_auto</buildtool_depend>
 
   <depend>rclcpp</depend>
+  <depend>tilde</depend>
+  <depend>tilde_msg</depend>
   <depend>tier4_rtc_msgs</depend>
   <depend>unique_identifier_msgs</depend>
 

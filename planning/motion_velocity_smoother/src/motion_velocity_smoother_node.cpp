@@ -32,7 +32,7 @@
 namespace motion_velocity_smoother
 {
 MotionVelocitySmootherNode::MotionVelocitySmootherNode(const rclcpp::NodeOptions & node_options)
-: Node("motion_velocity_smoother", node_options)
+: TildeNode("motion_velocity_smoother", node_options)
 {
   using std::placeholders::_1;
 
@@ -48,13 +48,13 @@ MotionVelocitySmootherNode::MotionVelocitySmootherNode(const rclcpp::NodeOptions
 
       // Set Publisher for jerk filtered algorithm
       pub_forward_filtered_trajectory_ =
-        create_publisher<Trajectory>("~/debug/forward_filtered_trajectory", 1);
+        create_tilde_publisher<Trajectory>("~/debug/forward_filtered_trajectory", 1);
       pub_backward_filtered_trajectory_ =
-        create_publisher<Trajectory>("~/debug/backward_filtered_trajectory", 1);
+        create_tilde_publisher<Trajectory>("~/debug/backward_filtered_trajectory", 1);
       pub_merged_filtered_trajectory_ =
-        create_publisher<Trajectory>("~/debug/merged_filtered_trajectory", 1);
+        create_tilde_publisher<Trajectory>("~/debug/merged_filtered_trajectory", 1);
       pub_closest_merged_velocity_ =
-        create_publisher<Float32Stamped>("~/closest_merged_velocity", 1);
+        create_tilde_publisher<Float32Stamped>("~/closest_merged_velocity", 1);
       break;
     }
     case AlgorithmType::L2: {
@@ -74,17 +74,17 @@ MotionVelocitySmootherNode::MotionVelocitySmootherNode(const rclcpp::NodeOptions
   }
 
   // publishers, subscribers
-  pub_trajectory_ = create_publisher<Trajectory>("~/output/trajectory", 1);
-  pub_velocity_limit_ = create_publisher<VelocityLimit>(
+  pub_trajectory_ = create_tilde_publisher<Trajectory>("~/output/trajectory", 1);
+  pub_velocity_limit_ = create_tilde_publisher<VelocityLimit>(
     "~/output/current_velocity_limit_mps", rclcpp::QoS{1}.transient_local());
-  pub_dist_to_stopline_ = create_publisher<Float32Stamped>("~/distance_to_stopline", 1);
-  pub_over_stop_velocity_ = create_publisher<StopSpeedExceeded>("~/stop_speed_exceeded", 1);
-  sub_current_trajectory_ = create_subscription<Trajectory>(
+  pub_dist_to_stopline_ = create_tilde_publisher<Float32Stamped>("~/distance_to_stopline", 1);
+  pub_over_stop_velocity_ = create_tilde_publisher<StopSpeedExceeded>("~/stop_speed_exceeded", 1);
+  sub_current_trajectory_ = create_tilde_subscription<Trajectory>(
     "~/input/trajectory", 1, std::bind(&MotionVelocitySmootherNode::onCurrentTrajectory, this, _1));
-  sub_current_odometry_ = create_subscription<Odometry>(
+  sub_current_odometry_ = create_tilde_subscription<Odometry>(
     "/localization/kinematic_state", 1,
     std::bind(&MotionVelocitySmootherNode::onCurrentOdometry, this, _1));
-  sub_external_velocity_limit_ = create_subscription<VelocityLimit>(
+  sub_external_velocity_limit_ = create_tilde_subscription<VelocityLimit>(
     "~/input/external_velocity_limit_mps", 1,
     std::bind(&MotionVelocitySmootherNode::onExternalVelocityLimit, this, _1));
 
@@ -94,17 +94,17 @@ MotionVelocitySmootherNode::MotionVelocitySmootherNode(const rclcpp::NodeOptions
 
   // debug
   publish_debug_trajs_ = declare_parameter("publish_debug_trajs", false);
-  debug_closest_velocity_ = create_publisher<Float32Stamped>("~/closest_velocity", 1);
-  debug_closest_acc_ = create_publisher<Float32Stamped>("~/closest_acceleration", 1);
-  debug_closest_jerk_ = create_publisher<Float32Stamped>("~/closest_jerk", 1);
-  debug_closest_max_velocity_ = create_publisher<Float32Stamped>("~/closest_max_velocity", 1);
-  debug_calculation_time_ = create_publisher<Float32Stamped>("~/calculation_time", 1);
-  pub_trajectory_raw_ = create_publisher<Trajectory>("~/debug/trajectory_raw", 1);
+  debug_closest_velocity_ = create_tilde_publisher<Float32Stamped>("~/closest_velocity", 1);
+  debug_closest_acc_ = create_tilde_publisher<Float32Stamped>("~/closest_acceleration", 1);
+  debug_closest_jerk_ = create_tilde_publisher<Float32Stamped>("~/closest_jerk", 1);
+  debug_closest_max_velocity_ = create_tilde_publisher<Float32Stamped>("~/closest_max_velocity", 1);
+  debug_calculation_time_ = create_tilde_publisher<Float32Stamped>("~/calculation_time", 1);
+  pub_trajectory_raw_ = create_tilde_publisher<Trajectory>("~/debug/trajectory_raw", 1);
   pub_trajectory_vel_lim_ =
-    create_publisher<Trajectory>("~/debug/trajectory_external_velocity_limited", 1);
+    create_tilde_publisher<Trajectory>("~/debug/trajectory_external_velocity_limited", 1);
   pub_trajectory_latacc_filtered_ =
-    create_publisher<Trajectory>("~/debug/trajectory_lateral_acc_filtered", 1);
-  pub_trajectory_resampled_ = create_publisher<Trajectory>("~/debug/trajectory_time_resampled", 1);
+    create_tilde_publisher<Trajectory>("~/debug/trajectory_lateral_acc_filtered", 1);
+  pub_trajectory_resampled_ = create_tilde_publisher<Trajectory>("~/debug/trajectory_time_resampled", 1);
 
   // Wait for first self pose
   self_pose_listener_.waitForFirstPose();
@@ -821,7 +821,7 @@ void MotionVelocitySmootherNode::publishDebugTrajectories(
 
 void MotionVelocitySmootherNode::publishClosestVelocity(
   const TrajectoryPoints & trajectory, const Pose & current_pose,
-  const rclcpp::Publisher<Float32Stamped>::SharedPtr pub) const
+  const tilde::TildePublisher<Float32Stamped>::SharedPtr pub) const
 {
   const auto closest_point =
     trajectory_utils::calcInterpolatedTrajectoryPoint(trajectory, current_pose);

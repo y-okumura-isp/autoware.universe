@@ -139,7 +139,7 @@ MissionPlannerLanelet2::MissionPlannerLanelet2(const rclcpp::NodeOptions & node_
 : MissionPlanner("mission_planner_node", node_options), is_graph_ready_(false)
 {
   using std::placeholders::_1;
-  map_subscriber_ = create_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
+  map_subscriber_ = create_tilde_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
     "input/vector_map", rclcpp::QoS{10}.transient_local(),
     std::bind(&MissionPlannerLanelet2::mapCallback, this, _1));
 }

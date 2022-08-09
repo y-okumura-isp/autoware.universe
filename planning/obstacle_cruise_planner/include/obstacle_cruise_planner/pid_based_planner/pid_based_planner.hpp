@@ -29,6 +29,9 @@
 #include <memory>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 using tier4_debug_msgs::msg::Float32MultiArrayStamped;
 
 class PIDBasedPlanner : public PlannerInterface
@@ -52,7 +55,7 @@ public:
   };
 
   PIDBasedPlanner(
-    rclcpp::Node & node, const LongitudinalInfo & longitudinal_info,
+    tilde::TildeNode & node, const LongitudinalInfo & longitudinal_info,
     const vehicle_info_util::VehicleInfo & vehicle_info);
 
   Trajectory generateCruiseTrajectory(
@@ -116,7 +119,7 @@ private:
     stop_watch_;
 
   // publisher
-  rclcpp::Publisher<Float32MultiArrayStamped>::SharedPtr debug_values_pub_;
+  tilde::TildePublisher<Float32MultiArrayStamped>::SharedPtr debug_values_pub_;
 
   boost::optional<double> prev_target_vel_;
 

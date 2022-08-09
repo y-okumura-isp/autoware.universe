@@ -59,6 +59,9 @@
 #include <mutex>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace motion_planning
 {
 namespace bg = boost::geometry;
@@ -91,7 +94,7 @@ struct SlowDownSection
   double velocity;
 };
 
-class ObstacleStopPlannerNode : public rclcpp::Node
+class ObstacleStopPlannerNode : public tilde::TildeNode
 {
 public:
   explicit ObstacleStopPlannerNode(const rclcpp::NodeOptions & node_options);
@@ -177,10 +180,10 @@ private:
   rclcpp::Subscription<nav_msgs::msg::Odometry>::SharedPtr current_velocity_sub_;
   rclcpp::Subscription<PredictedObjects>::SharedPtr dynamic_object_sub_;
   rclcpp::Subscription<ExpandStopRange>::SharedPtr expand_stop_range_sub_;
-  rclcpp::Publisher<Trajectory>::SharedPtr path_pub_;
-  rclcpp::Publisher<diagnostic_msgs::msg::DiagnosticStatus>::SharedPtr stop_reason_diag_pub_;
-  rclcpp::Publisher<VelocityLimitClearCommand>::SharedPtr pub_clear_velocity_limit_;
-  rclcpp::Publisher<VelocityLimit>::SharedPtr pub_velocity_limit_;
+  tilde::TildePublisher<Trajectory>::SharedPtr path_pub_;
+  tilde::TildePublisher<diagnostic_msgs::msg::DiagnosticStatus>::SharedPtr stop_reason_diag_pub_;
+  tilde::TildePublisher<VelocityLimitClearCommand>::SharedPtr pub_clear_velocity_limit_;
+  tilde::TildePublisher<VelocityLimit>::SharedPtr pub_velocity_limit_;
 
   std::unique_ptr<motion_planning::AdaptiveCruiseController> acc_controller_;
   std::shared_ptr<ObstacleStopPlannerDebugNode> debug_ptr_;

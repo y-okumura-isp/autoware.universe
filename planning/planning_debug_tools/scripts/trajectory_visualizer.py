@@ -112,14 +112,14 @@ class TrajectoryVisualizer(Node):
         self.obstacle_stop_traj = Trajectory()
 
         self.plotted = [False] * 9
-        self.sub_localization_twist = self.create_subscription(
+        self.sub_localization_twist = self.create_tilde_subscription(
             Odometry, "/localization/kinematic_state", self.CallbackLocalizationTwist, 1
         )
-        self.sub_vehicle_twist = self.create_subscription(
+        self.sub_vehicle_twist = self.create_tilde_subscription(
             VelocityReport, "/vehicle/status/velocity_status", self.CallbackVehicleTwist, 1
         )
 
-        self.sub_external_velocity_limit = self.create_subscription(
+        self.sub_external_velocity_limit = self.create_tilde_subscription(
             VelocityLimit, "/planning/scenario_planning/max_velocity", self.CallbackVelocityLimit, 1
         )
 

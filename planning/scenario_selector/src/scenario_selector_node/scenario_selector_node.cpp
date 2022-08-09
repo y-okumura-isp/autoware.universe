@@ -317,7 +317,7 @@ void ScenarioSelectorNode::publishTrajectory(
 }
 
 ScenarioSelectorNode::ScenarioSelectorNode(const rclcpp::NodeOptions & node_options)
-: Node("scenario_selector", node_options),
+: TildeNode("scenario_selector", node_options),
   tf_buffer_(this->get_clock()),
   tf_listener_(tf_buffer_),
   current_scenario_(tier4_planning_msgs::msg::Scenario::EMPTY),
@@ -330,31 +330,31 @@ ScenarioSelectorNode::ScenarioSelectorNode(const rclcpp::NodeOptions & node_opti
 {
   // Input
   sub_lane_driving_trajectory_ =
-    this->create_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
+    this->create_tilde_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
       "input/lane_driving/trajectory", rclcpp::QoS{1},
       std::bind(&ScenarioSelectorNode::onLaneDrivingTrajectory, this, std::placeholders::_1));
 
-  sub_parking_trajectory_ = this->create_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
+  sub_parking_trajectory_ = this->create_tilde_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
     "input/parking/trajectory", rclcpp::QoS{1},
     std::bind(&ScenarioSelectorNode::onParkingTrajectory, this, std::placeholders::_1));
 
-  sub_lanelet_map_ = this->create_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
+  sub_lanelet_map_ = this->create_tilde_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
     "input/lanelet_map", rclcpp::QoS{1}.transient_local(),
     std::bind(&ScenarioSelectorNode::onMap, this, std::placeholders::_1));
-  sub_route_ = this->create_subscription<autoware_auto_planning_msgs::msg::HADMapRoute>(
+  sub_route_ = this->create_tilde_subscription<autoware_auto_planning_msgs::msg::HADMapRoute>(
     "input/route", rclcpp::QoS{1}.transient_local(),
     std::bind(&ScenarioSelectorNode::onRoute, this, std::placeholders::_1));
-  sub_odom_ = this->create_subscription<nav_msgs::msg::Odometry>(
+  sub_odom_ = this->create_tilde_subscription<nav_msgs::msg::Odometry>(
     "input/odometry", rclcpp::QoS{100},
     std::bind(&ScenarioSelectorNode::onOdom, this, std::placeholders::_1));
-  sub_parking_state_ = this->create_subscription<std_msgs::msg::Bool>(
+  sub_parking_state_ = this->create_tilde_subscription<std_msgs::msg::Bool>(
     "is_parking_completed", rclcpp::QoS{100},
     std::bind(&ScenarioSelectorNode::onParkingState, this, std::placeholders::_1));
 
   // Output
   pub_scenario_ =
-    this->create_publisher<tier4_planning_msgs::msg::Scenario>("output/scenario", rclcpp::QoS{1});
-  pub_trajectory_ = this->create_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
+    this->create_tilde_publisher<tier4_planning_msgs::msg::Scenario>("output/scenario", rclcpp::QoS{1});
+  pub_trajectory_ = this->create_tilde_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
     "output/trajectory", rclcpp::QoS{1});
 
   // Timer Callback

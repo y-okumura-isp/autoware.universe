@@ -21,12 +21,15 @@
 
 #include <string>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace planning_diagnostics
 {
 using autoware_auto_planning_msgs::msg::Trajectory;
 using autoware_auto_planning_msgs::msg::TrajectoryPoint;
 
-class InvalidTrajectoryPublisherNode : public rclcpp::Node
+class InvalidTrajectoryPublisherNode : public tilde::TildeNode
 {
 public:
   explicit InvalidTrajectoryPublisherNode(const rclcpp::NodeOptions & node_options);
@@ -36,7 +39,7 @@ public:
 private:
   // ROS
   rclcpp::Subscription<Trajectory>::SharedPtr traj_sub_;
-  rclcpp::Publisher<Trajectory>::SharedPtr traj_pub_;
+  tilde::TildePublisher<Trajectory>::SharedPtr traj_pub_;
   rclcpp::TimerBase::SharedPtr timer_;
 
   Trajectory::ConstSharedPtr current_trajectory_ = nullptr;

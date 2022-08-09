@@ -31,6 +31,9 @@
 #include <string>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace planning_diagnostics
 {
 using autoware_auto_planning_msgs::msg::Trajectory;
@@ -39,7 +42,7 @@ using autoware_auto_planning_msgs::msg::TrajectoryPoint;
 /**
  * @brief Node for planning evaluation
  */
-class MotionEvaluatorNode : public rclcpp::Node
+class MotionEvaluatorNode : public tilde::TildeNode
 {
 public:
   explicit MotionEvaluatorNode(const rclcpp::NodeOptions & node_options);

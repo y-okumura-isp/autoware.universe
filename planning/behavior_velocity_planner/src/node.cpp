@@ -87,7 +87,7 @@ autoware_auto_planning_msgs::msg::Path to_path(
 }  // namespace
 
 BehaviorVelocityPlannerNode::BehaviorVelocityPlannerNode(const rclcpp::NodeOptions & node_options)
-: Node("behavior_velocity_planner_node", node_options),
+: TildeNode("behavior_velocity_planner_node", node_options),
   tf_buffer_(this->get_clock()),
   tf_listener_(tf_buffer_),
   planner_data_(*this)
@@ -95,55 +95,55 @@ BehaviorVelocityPlannerNode::BehaviorVelocityPlannerNode(const rclcpp::NodeOptio
   using std::placeholders::_1;
   // Trigger Subscriber
   trigger_sub_path_with_lane_id_ =
-    this->create_subscription<autoware_auto_planning_msgs::msg::PathWithLaneId>(
+    this->create_tilde_subscription<autoware_auto_planning_msgs::msg::PathWithLaneId>(
       "~/input/path_with_lane_id", 1, std::bind(&BehaviorVelocityPlannerNode::onTrigger, this, _1),
       createSubscriptionOptions(this));
 
   // Subscribers
   sub_predicted_objects_ =
-    this->create_subscription<autoware_auto_perception_msgs::msg::PredictedObjects>(
+    this->create_tilde_subscription<autoware_auto_perception_msgs::msg::PredictedObjects>(
       "~/input/dynamic_objects", 1,
       std::bind(&BehaviorVelocityPlannerNode::onPredictedObjects, this, _1),
       createSubscriptionOptions(this));
-  sub_no_ground_pointcloud_ = this->create_subscription<sensor_msgs::msg::PointCloud2>(
+  sub_no_ground_pointcloud_ = this->create_tilde_subscription<sensor_msgs::msg::PointCloud2>(
     "~/input/no_ground_pointcloud", rclcpp::SensorDataQoS(),
     std::bind(&BehaviorVelocityPlannerNode::onNoGroundPointCloud, this, _1),
     createSubscriptionOptions(this));
-  sub_vehicle_odometry_ = this->create_subscription<nav_msgs::msg::Odometry>(
+  sub_vehicle_odometry_ = this->create_tilde_subscription<nav_msgs::msg::Odometry>(
     "~/input/vehicle_odometry", 1,
     std::bind(&BehaviorVelocityPlannerNode::onVehicleVelocity, this, _1),
     createSubscriptionOptions(this));
-  sub_lanelet_map_ = this->create_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
+  sub_lanelet_map_ = this->create_tilde_subscription<autoware_auto_mapping_msgs::msg::HADMapBin>(
     "~/input/vector_map", rclcpp::QoS(10).transient_local(),
     std::bind(&BehaviorVelocityPlannerNode::onLaneletMap, this, _1),
     createSubscriptionOptions(this));
   sub_traffic_signals_ =
-    this->create_subscription<autoware_auto_perception_msgs::msg::TrafficSignalArray>(
+    this->create_tilde_subscription<autoware_auto_perception_msgs::msg::TrafficSignalArray>(
       "~/input/traffic_signals", 10,
       std::bind(&BehaviorVelocityPlannerNode::onTrafficSignals, this, _1),
       createSubscriptionOptions(this));
-  sub_external_crosswalk_states_ = this->create_subscription<tier4_api_msgs::msg::CrosswalkStatus>(
+  sub_external_crosswalk_states_ = this->create_tilde_subscription<tier4_api_msgs::msg::CrosswalkStatus>(
     "~/input/external_crosswalk_states", 10,
     std::bind(&BehaviorVelocityPlannerNode::onExternalCrosswalkStates, this, _1),
     createSubscriptionOptions(this));
   sub_external_intersection_states_ =
-    this->create_subscription<tier4_api_msgs::msg::IntersectionStatus>(
+    this->create_tilde_subscription<tier4_api_msgs::msg::IntersectionStatus>(
       "~/input/external_intersection_states", 10,
       std::bind(&BehaviorVelocityPlannerNode::onExternalIntersectionStates, this, _1));
-  sub_external_velocity_limit_ = this->create_subscription<VelocityLimit>(
+  sub_external_velocity_limit_ = this->create_tilde_subscription<VelocityLimit>(
     "~/input/external_velocity_limit_mps", rclcpp::QoS{1}.transient_local(),
     std::bind(&BehaviorVelocityPlannerNode::onExternalVelocityLimit, this, _1));
   sub_external_traffic_signals_ =
-    this->create_subscription<autoware_auto_perception_msgs::msg::TrafficSignalArray>(
+    this->create_tilde_subscription<autoware_auto_perception_msgs::msg::TrafficSignalArray>(
       "~/input/external_traffic_signals", 10,
       std::bind(&BehaviorVelocityPlannerNode::onExternalTrafficSignals, this, _1),
       createSubscriptionOptions(this));
   sub_virtual_traffic_light_states_ =
-    this->create_subscription<tier4_v2x_msgs::msg::VirtualTrafficLightStateArray>(
+    this->create_tilde_subscription<tier4_v2x_msgs::msg::VirtualTrafficLightStateArray>(
       "~/input/virtual_traffic_light_states", 10,
       std::bind(&BehaviorVelocityPlannerNode::onVirtualTrafficLightStates, this, _1),
       createSubscriptionOptions(this));
-  sub_occupancy_grid_ = this->create_subscription<nav_msgs::msg::OccupancyGrid>(
+  sub_occupancy_grid_ = this->create_tilde_subscription<nav_msgs::msg::OccupancyGrid>(
     "~/input/occupancy_grid", 1, std::bind(&BehaviorVelocityPlannerNode::onOccupancyGrid, this, _1),
     createSubscriptionOptions(this));
 
@@ -151,10 +151,10 @@ BehaviorVelocityPlannerNode::BehaviorVelocityPlannerNode(const rclcpp::NodeOptio
   onParam();
 
   // Publishers
-  path_pub_ = this->create_publisher<autoware_auto_planning_msgs::msg::Path>("~/output/path", 1);
+  path_pub_ = this->create_tilde_publisher<autoware_auto_planning_msgs::msg::Path>("~/output/path", 1);
   stop_reason_diag_pub_ =
-    this->create_publisher<diagnostic_msgs::msg::DiagnosticStatus>("~/output/stop_reason", 1);
-  debug_viz_pub_ = this->create_publisher<visualization_msgs::msg::MarkerArray>("~/debug/path", 1);
+    this->create_tilde_publisher<diagnostic_msgs::msg::DiagnosticStatus>("~/output/stop_reason", 1);
+  debug_viz_pub_ = this->create_tilde_publisher<visualization_msgs::msg::MarkerArray>("~/debug/path", 1);
 
   // Parameters
   forward_path_length_ = this->declare_parameter("forward_path_length", 1000.0);

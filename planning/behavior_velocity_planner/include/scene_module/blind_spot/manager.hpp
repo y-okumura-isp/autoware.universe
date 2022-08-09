@@ -24,12 +24,15 @@
 #include <functional>
 #include <memory>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_velocity_planner
 {
 class BlindSpotModuleManager : public SceneModuleManagerInterfaceWithRTC
 {
 public:
-  explicit BlindSpotModuleManager(rclcpp::Node & node);
+  explicit BlindSpotModuleManager(tilde::TildeNode & node);
 
   const char * getModuleName() override { return "blind_spot"; }
 

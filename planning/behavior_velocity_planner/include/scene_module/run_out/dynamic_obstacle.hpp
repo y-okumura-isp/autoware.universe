@@ -33,6 +33,9 @@
 
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_velocity_planner
 {
 using autoware_auto_perception_msgs::msg::ObjectClassification;
@@ -95,7 +98,7 @@ struct DynamicObstacleData
 class DynamicObstacleCreator
 {
 public:
-  explicit DynamicObstacleCreator(rclcpp::Node & node) : node_(node) {}
+  explicit DynamicObstacleCreator(tilde::TildeNode & node) : node_(node) {}
   virtual ~DynamicObstacleCreator() = default;
   virtual std::vector<DynamicObstacle> createDynamicObstacles() = 0;
   void setParam(const DynamicObstacleParam & param) { param_ = param; }
@@ -120,7 +123,7 @@ protected:
 class DynamicObstacleCreatorForObject : public DynamicObstacleCreator
 {
 public:
-  explicit DynamicObstacleCreatorForObject(rclcpp::Node & node);
+  explicit DynamicObstacleCreatorForObject(tilde::TildeNode & node);
   std::vector<DynamicObstacle> createDynamicObstacles() override;
 };
 
@@ -131,7 +134,7 @@ public:
 class DynamicObstacleCreatorForObjectWithoutPath : public DynamicObstacleCreator
 {
 public:
-  explicit DynamicObstacleCreatorForObjectWithoutPath(rclcpp::Node & node);
+  explicit DynamicObstacleCreatorForObjectWithoutPath(tilde::TildeNode & node);
   std::vector<DynamicObstacle> createDynamicObstacles() override;
 };
 
@@ -142,7 +145,7 @@ public:
 class DynamicObstacleCreatorForPoints : public DynamicObstacleCreator
 {
 public:
-  explicit DynamicObstacleCreatorForPoints(rclcpp::Node & node);
+  explicit DynamicObstacleCreatorForPoints(tilde::TildeNode & node);
   std::vector<DynamicObstacle> createDynamicObstacles() override;
 
 private:

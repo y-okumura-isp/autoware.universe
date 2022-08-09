@@ -37,6 +37,9 @@
 #include <lanelet2_routing/RoutingGraph.h>
 #include <lanelet2_traffic_rules/TrafficRulesFactory.h>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace mission_planner
 {
 using RouteSections = std::vector<autoware_auto_mapping_msgs::msg::HADMapSegment>;

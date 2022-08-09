@@ -32,6 +32,9 @@
 #include <string>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace planning_diagnostics
 {
 using autoware_auto_perception_msgs::msg::PredictedObjects;
@@ -43,7 +46,7 @@ using diagnostic_msgs::msg::DiagnosticStatus;
 /**
  * @brief Node for planning evaluation
  */
-class PlanningEvaluatorNode : public rclcpp::Node
+class PlanningEvaluatorNode : public tilde::TildeNode
 {
 public:
   explicit PlanningEvaluatorNode(const rclcpp::NodeOptions & node_options);
@@ -85,7 +88,7 @@ private:
   rclcpp::Subscription<Trajectory>::SharedPtr traj_sub_;
   rclcpp::Subscription<Trajectory>::SharedPtr ref_sub_;
   rclcpp::Subscription<PredictedObjects>::SharedPtr objects_sub_;
-  rclcpp::Publisher<DiagnosticArray>::SharedPtr metrics_pub_;
+  tilde::TildePublisher<DiagnosticArray>::SharedPtr metrics_pub_;
   std::shared_ptr<tf2_ros::TransformListener> transform_listener_{nullptr};
   std::unique_ptr<tf2_ros::Buffer> tf_buffer_;
 

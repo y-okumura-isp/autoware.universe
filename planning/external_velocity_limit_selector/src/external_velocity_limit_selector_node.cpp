@@ -69,25 +69,25 @@ VelocityLimit getHardestLimit(
 
 ExternalVelocityLimitSelectorNode::ExternalVelocityLimitSelectorNode(
   const rclcpp::NodeOptions & node_options)
-: Node("external_velocity_limit_selector", node_options)
+: TildeNode("external_velocity_limit_selector", node_options)
 {
   using std::placeholders::_1;
   // Input
-  sub_external_velocity_limit_from_api_ = this->create_subscription<VelocityLimit>(
+  sub_external_velocity_limit_from_api_ = this->create_tilde_subscription<VelocityLimit>(
     "input/velocity_limit_from_api", rclcpp::QoS{1}.transient_local(),
     std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitFromAPI, this, _1));
 
-  sub_external_velocity_limit_from_internal_ = this->create_subscription<VelocityLimit>(
+  sub_external_velocity_limit_from_internal_ = this->create_tilde_subscription<VelocityLimit>(
     "input/velocity_limit_from_internal", rclcpp::QoS{1}.transient_local(),
     std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitFromInternal, this, _1));
 
-  sub_velocity_limit_clear_command_ = this->create_subscription<VelocityLimitClearCommand>(
+  sub_velocity_limit_clear_command_ = this->create_tilde_subscription<VelocityLimitClearCommand>(
     "input/velocity_limit_clear_command_from_internal", rclcpp::QoS{1}.transient_local(),
     std::bind(&ExternalVelocityLimitSelectorNode::onVelocityLimitClearCommand, this, _1));
 
   // Output
   pub_external_velocity_limit_ =
-    this->create_publisher<VelocityLimit>("output/external_velocity_limit", 1);
+    this->create_tilde_publisher<VelocityLimit>("output/external_velocity_limit", 1);
 
   // Params
   {

@@ -73,25 +73,25 @@ class VelocityChecker(Node):
         transient_local_profile = rclpy.qos.QoSProfile(depth=1, durability=transien_local)
         lane_drv = "/planning/scenario_planning/lane_driving"
         scenario = "/planning/scenario_planning"
-        self.sub0 = self.create_subscription(
+        self.sub0 = self.create_tilde_subscription(
             PathWithLaneId,
             lane_drv + "/behavior_planning/path_with_lane_id",
             self.CallBackBehaviorPathWLid,
             1,
         )
-        self.sub1 = self.create_subscription(
+        self.sub1 = self.create_tilde_subscription(
             Path, lane_drv + "/behavior_planning/path", self.CallBackBehaviorPath, 1
         )
-        self.sub2 = self.create_subscription(
+        self.sub2 = self.create_tilde_subscription(
             Trajectory,
             lane_drv + "/motion_planning/obstacle_avoidance_planner/trajectory",
             self.CallBackAvoidTrajectory,
             1,
         )
-        self.sub3 = self.create_subscription(
+        self.sub3 = self.create_tilde_subscription(
             Trajectory, lane_drv + "/trajectory", self.CallBackLaneDriveTrajectory, 1
         )
-        self.sub4 = self.create_subscription(
+        self.sub4 = self.create_tilde_subscription(
             Trajectory,
             scenario + "/motion_velocity_smoother/debug/trajectory_lateral_acc_filtered",
             # TODO: change to following string after fixing bug of autoware
@@ -99,29 +99,29 @@ class VelocityChecker(Node):
             self.CallBackLataccTrajectory,
             1,
         )
-        self.sub5 = self.create_subscription(
+        self.sub5 = self.create_tilde_subscription(
             Trajectory, scenario + "/trajectory", self.CallBackScenarioTrajectory, 1
         )
 
         # control commands
-        self.sub6 = self.create_subscription(
+        self.sub6 = self.create_tilde_subscription(
             AckermannControlCommand,
             "/control/trajectory_follower/control_cmd",
             self.CallBackControlCmd,
             1,
         )
-        self.sub7 = self.create_subscription(
+        self.sub7 = self.create_tilde_subscription(
             AckermannControlCommand, "/control/command/control_cmd", self.CallBackVehicleCmd, 1
         )
 
         # others related to velocity
-        self.sub8 = self.create_subscription(
+        self.sub8 = self.create_tilde_subscription(
             Engage, "/autoware/engage", self.CallBackAwEngage, profile
         )
-        self.sub12 = self.create_subscription(
+        self.sub12 = self.create_tilde_subscription(
             Engage, "/vehicle/engage", self.CallBackVehicleEngage, profile
         )
-        self.sub9 = self.create_subscription(
+        self.sub9 = self.create_tilde_subscription(
             VelocityLimit,
             "/planning/scenario_planning/current_max_velocity",
             self.CallBackExternalVelLim,
@@ -129,15 +129,15 @@ class VelocityChecker(Node):
         )
 
         # self twist
-        self.sub10 = self.create_subscription(
+        self.sub10 = self.create_tilde_subscription(
             Odometry, "/localization/kinematic_state", self.CallBackLocalizationTwist, 1
         )
-        self.sub11 = self.create_subscription(
+        self.sub11 = self.create_tilde_subscription(
             VelocityReport, "/vehicle/status/velocity_status", self.CallBackVehicleTwist, 1
         )
 
         # distance_to_stopline
-        self.pub12 = self.create_subscription(
+        self.pub12 = self.create_tilde_subscription(
             Float32Stamped,
             scenario + "/motion_velocity_smoother/distance_to_stopline",
             self.CallBackDistanceToStopline,
@@ -145,7 +145,7 @@ class VelocityChecker(Node):
         )
 
         # publish data
-        self.pub_v_arr = self.create_publisher(Float32MultiArrayStamped, "closest_speeds", 1)
+        self.pub_v_arr = self.create_tilde_publisher(Float32MultiArrayStamped, "closest_speeds", 1)
 
         time.sleep(1.0)  # wait for ready to publish/subscribe
 

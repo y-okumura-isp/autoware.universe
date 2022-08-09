@@ -56,6 +56,9 @@
 #include <string>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_path_planner
 {
 using ApprovalMsg = tier4_planning_msgs::msg::Approval;
@@ -78,7 +81,7 @@ using tier4_planning_msgs::msg::PathChangeModuleArray;
 using tier4_planning_msgs::msg::Scenario;
 using visualization_msgs::msg::MarkerArray;
 
-class BehaviorPathPlannerNode : public rclcpp::Node
+class BehaviorPathPlannerNode : public tilde::TildeNode
 {
 public:
   explicit BehaviorPathPlannerNode(const rclcpp::NodeOptions & node_options);
@@ -90,10 +93,10 @@ private:
   rclcpp::Subscription<Scenario>::SharedPtr scenario_subscriber_;
   rclcpp::Subscription<PredictedObjects>::SharedPtr perception_subscriber_;
   rclcpp::Subscription<OccupancyGrid>::SharedPtr occupancy_grid_subscriber_;
-  rclcpp::Publisher<PathWithLaneId>::SharedPtr path_publisher_;
-  rclcpp::Publisher<Path>::SharedPtr path_candidate_publisher_;
-  rclcpp::Publisher<TurnIndicatorsCommand>::SharedPtr turn_signal_publisher_;
-  rclcpp::Publisher<HazardLightsCommand>::SharedPtr hazard_signal_publisher_;
+  tilde::TildePublisher<PathWithLaneId>::SharedPtr path_publisher_;
+  tilde::TildePublisher<Path>::SharedPtr path_candidate_publisher_;
+  tilde::TildePublisher<TurnIndicatorsCommand>::SharedPtr turn_signal_publisher_;
+  tilde::TildePublisher<HazardLightsCommand>::SharedPtr hazard_signal_publisher_;
   rclcpp::TimerBase::SharedPtr timer_;
 
   std::shared_ptr<PlannerData> planner_data_;
@@ -162,11 +165,11 @@ private:
   // debug
 
 private:
-  rclcpp::Publisher<OccupancyGrid>::SharedPtr debug_drivable_area_publisher_;
-  rclcpp::Publisher<MarkerArray>::SharedPtr debug_drivable_area_lanelets_publisher_;
-  rclcpp::Publisher<Path>::SharedPtr debug_path_publisher_;
-  rclcpp::Publisher<AvoidanceDebugMsgArray>::SharedPtr debug_avoidance_msg_array_publisher_;
-  rclcpp::Publisher<MarkerArray>::SharedPtr debug_marker_publisher_;
+  tilde::TildePublisher<OccupancyGrid>::SharedPtr debug_drivable_area_publisher_;
+  tilde::TildePublisher<MarkerArray>::SharedPtr debug_drivable_area_lanelets_publisher_;
+  tilde::TildePublisher<Path>::SharedPtr debug_path_publisher_;
+  tilde::TildePublisher<AvoidanceDebugMsgArray>::SharedPtr debug_avoidance_msg_array_publisher_;
+  tilde::TildePublisher<MarkerArray>::SharedPtr debug_marker_publisher_;
   void publishDebugMarker(const std::vector<MarkerArray> & debug_markers);
 };
 }  // namespace behavior_path_planner

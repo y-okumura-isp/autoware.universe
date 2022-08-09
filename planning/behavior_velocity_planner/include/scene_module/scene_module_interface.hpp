@@ -43,6 +43,9 @@
 
 #include <visualization_msgs/msg/marker_array.hpp>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace behavior_velocity_planner
 {
 
@@ -115,17 +118,17 @@ protected:
 class SceneModuleManagerInterface
 {
 public:
-  SceneModuleManagerInterface(rclcpp::Node & node, [[maybe_unused]] const char * module_name)
+  SceneModuleManagerInterface(tilde::TildeNode & node, [[maybe_unused]] const char * module_name)
   : clock_(node.get_clock()), logger_(node.get_logger())
   {
     const auto ns = std::string("~/debug/") + module_name;
-    pub_debug_ = node.create_publisher<visualization_msgs::msg::MarkerArray>(ns, 20);
-    pub_virtual_wall_ = node.create_publisher<visualization_msgs::msg::MarkerArray>(
+    pub_debug_ = node.create_tilde_publisher<visualization_msgs::msg::MarkerArray>(ns, 20);
+    pub_virtual_wall_ = node.create_tilde_publisher<visualization_msgs::msg::MarkerArray>(
       std::string("~/virtual_wall/") + module_name, 20);
     pub_stop_reason_ =
-      node.create_publisher<tier4_planning_msgs::msg::StopReasonArray>("~/output/stop_reasons", 20);
+      node.create_tilde_publisher<tier4_planning_msgs::msg::StopReasonArray>("~/output/stop_reasons", 20);
     pub_infrastructure_commands_ =
-      node.create_publisher<tier4_v2x_msgs::msg::InfrastructureCommandArray>(
+      node.create_tilde_publisher<tier4_v2x_msgs::msg::InfrastructureCommandArray>(
         "~/output/infrastructure_commands", 20);
 
     processing_time_publisher_ = std::make_shared<DebugPublisher>(&node, "~/debug");
@@ -256,10 +259,10 @@ protected:
   rclcpp::Clock::SharedPtr clock_;
   // Debug
   rclcpp::Logger logger_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_virtual_wall_;
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_debug_;
-  rclcpp::Publisher<tier4_planning_msgs::msg::StopReasonArray>::SharedPtr pub_stop_reason_;
-  rclcpp::Publisher<tier4_v2x_msgs::msg::InfrastructureCommandArray>::SharedPtr
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_virtual_wall_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_debug_;
+  tilde::TildePublisher<tier4_planning_msgs::msg::StopReasonArray>::SharedPtr pub_stop_reason_;
+  tilde::TildePublisher<tier4_v2x_msgs::msg::InfrastructureCommandArray>::SharedPtr
     pub_infrastructure_commands_;
 
   std::shared_ptr<DebugPublisher> processing_time_publisher_;
@@ -268,7 +271,7 @@ protected:
 class SceneModuleManagerInterfaceWithRTC : public SceneModuleManagerInterface
 {
 public:
-  SceneModuleManagerInterfaceWithRTC(rclcpp::Node & node, const char * module_name)
+  SceneModuleManagerInterfaceWithRTC(tilde::TildeNode & node, const char * module_name)
   : SceneModuleManagerInterface(node, module_name), rtc_interface_(&node, module_name)
   {
   }

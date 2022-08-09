@@ -23,7 +23,7 @@ namespace behavior_velocity_planner
 {
 using lanelet::TrafficSign;
 
-StopLineModuleManager::StopLineModuleManager(rclcpp::Node & node)
+StopLineModuleManager::StopLineModuleManager(tilde::TildeNode & node)
 : SceneModuleManagerInterface(node, getModuleName())
 {
   const std::string ns(getModuleName());
