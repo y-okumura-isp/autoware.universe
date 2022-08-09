@@ -28,7 +28,7 @@ using tier4_autoware_utils::calcDistance2d;
 using tier4_autoware_utils::calcYawDeviation;
 
 OperationModeTransitionManager::OperationModeTransitionManager(const rclcpp::NodeOptions & options)
-: Node("operation_mode_transition_manager", options)
+: TildeNode("operation_mode_transition_manager", options)
 {
   using std::placeholders::_1;
   using std::placeholders::_2;
@@ -37,25 +37,25 @@ OperationModeTransitionManager::OperationModeTransitionManager(const rclcpp::Nod
   data_->requested_state = State::MANUAL_DIRECT;
   data_->vehicle_info = vehicle_info_util::VehicleInfoUtil(*this).getVehicleInfo();
 
-  pub_operation_mode_ = create_publisher<OperationMode>("operation_mode", 1);
-  pub_auto_available_ = create_publisher<IsAutonomousAvailable>("is_autonomous_available", 1);
-  pub_debug_info_ = create_publisher<OperationModeTransitionManagerDebug>("~/debug_info", 1);
+  pub_operation_mode_ = create_tilde_publisher<OperationMode>("operation_mode", 1);
+  pub_auto_available_ = create_tilde_publisher<IsAutonomousAvailable>("is_autonomous_available", 1);
+  pub_debug_info_ = create_tilde_publisher<OperationModeTransitionManagerDebug>("~/debug_info", 1);
 
-  sub_vehicle_kinematics_ = create_subscription<Odometry>(
+  sub_vehicle_kinematics_ = create_tilde_subscription<Odometry>(
     "kinematics", 1, [this](const Odometry::SharedPtr msg) { data_->kinematics = *msg; });
 
-  sub_trajectory_ = create_subscription<Trajectory>(
+  sub_trajectory_ = create_tilde_subscription<Trajectory>(
     "trajectory", 1, [this](const Trajectory::SharedPtr msg) { data_->trajectory = *msg; });
 
-  sub_control_cmd_ = create_subscription<AckermannControlCommand>(
+  sub_control_cmd_ = create_tilde_subscription<AckermannControlCommand>(
     "control_cmd", 1,
     [this](const AckermannControlCommand::SharedPtr msg) { data_->control_cmd = *msg; });
 
-  sub_control_mode_ = create_subscription<ControlModeReport>(
+  sub_control_mode_ = create_tilde_subscription<ControlModeReport>(
     "control_mode_report", 1,
     [this](const ControlModeReport::SharedPtr msg) { data_->current_control_mode = *msg; });
 
-  sub_gate_operation_mode_ = create_subscription<OperationMode>(
+  sub_gate_operation_mode_ = create_tilde_subscription<OperationMode>(
     "gate_operation_mode", 1,
     [this](const OperationMode::SharedPtr msg) { data_->current_gate_operation_mode = *msg; });
 

@@ -31,7 +31,10 @@
 
 #include <memory>
 
-class ExternalCmdSelector : public rclcpp::Node
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
+class ExternalCmdSelector : public tilde::TildeNode
 {
 public:
   explicit ExternalCmdSelector(const rclcpp::NodeOptions & node_options);
@@ -53,12 +56,12 @@ private:
   rclcpp::CallbackGroup::SharedPtr callback_group_services_;
 
   // Publisher
-  rclcpp::Publisher<CommandSourceMode>::SharedPtr pub_current_selector_mode_;
-  rclcpp::Publisher<ExternalControlCommand>::SharedPtr pub_control_cmd_;
-  rclcpp::Publisher<InternalGearShift>::SharedPtr pub_shift_cmd_;
-  rclcpp::Publisher<InternalTurnSignal>::SharedPtr pub_turn_signal_cmd_;
-  rclcpp::Publisher<InternalHazardSignal>::SharedPtr pub_hazard_signal_cmd_;
-  rclcpp::Publisher<InternalHeartbeat>::SharedPtr pub_heartbeat_;
+  tilde::TildePublisher<CommandSourceMode>::SharedPtr pub_current_selector_mode_;
+  tilde::TildePublisher<ExternalControlCommand>::SharedPtr pub_control_cmd_;
+  tilde::TildePublisher<InternalGearShift>::SharedPtr pub_shift_cmd_;
+  tilde::TildePublisher<InternalTurnSignal>::SharedPtr pub_turn_signal_cmd_;
+  tilde::TildePublisher<InternalHazardSignal>::SharedPtr pub_hazard_signal_cmd_;
+  tilde::TildePublisher<InternalHeartbeat>::SharedPtr pub_heartbeat_;
 
   // Subscriber
   rclcpp::Subscription<ExternalControlCommand>::SharedPtr sub_local_control_cmd_;

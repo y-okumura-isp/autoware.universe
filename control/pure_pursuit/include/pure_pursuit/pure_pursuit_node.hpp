@@ -50,6 +50,9 @@
 #include <memory>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace pure_pursuit
 {
 struct Param
@@ -71,7 +74,7 @@ struct DebugData
   geometry_msgs::msg::Point next_target;
 };
 
-class PurePursuitNode : public rclcpp::Node
+class PurePursuitNode : public tilde::TildeNode
 {
 public:
   explicit PurePursuitNode(const rclcpp::NodeOptions & node_options);
@@ -96,13 +99,13 @@ private:
   geometry_msgs::msg::PoseStamped::ConstSharedPtr current_pose_;
 
   // Publisher
-  rclcpp::Publisher<autoware_auto_control_msgs::msg::AckermannLateralCommand>::SharedPtr
+  tilde::TildePublisher<autoware_auto_control_msgs::msg::AckermannLateralCommand>::SharedPtr
     pub_ctrl_cmd_;
 
   void publishCommand(const double target_curvature);
 
   // Debug Publisher
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_debug_marker_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_debug_marker_;
 
   void publishDebugMarker() const;
 

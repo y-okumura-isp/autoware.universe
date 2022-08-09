@@ -49,7 +49,7 @@ void update_param(
 }
 }  // namespace
 
-MpcLateralController::MpcLateralController(rclcpp::Node & node) : node_{&node}
+MpcLateralController::MpcLateralController(tilde::TildeNode & node) : node_{&node}
 {
   using std::placeholders::_1;
 
@@ -140,10 +140,10 @@ MpcLateralController::MpcLateralController(rclcpp::Node & node) : node_{&node}
     m_mpc.initializeLowPassFilters(steering_lpf_cutoff_hz, error_deriv_lpf_cutoff_hz);
   }
 
-  m_pub_predicted_traj = node_->create_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
+  m_pub_predicted_traj = node_->create_tilde_publisher<autoware_auto_planning_msgs::msg::Trajectory>(
     "~/output/predicted_trajectory", 1);
   m_pub_diagnostic =
-    node_->create_publisher<autoware_auto_system_msgs::msg::Float32MultiArrayDiagnostic>(
+    node_->create_tilde_publisher<autoware_auto_system_msgs::msg::Float32MultiArrayDiagnostic>(
       "~/output/lateral_diagnostic", 1);
 
   // TODO(Frederik.Beaujean) ctor is too long, should factor out parameter declarations

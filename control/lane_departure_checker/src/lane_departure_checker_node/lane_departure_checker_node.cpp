@@ -121,7 +121,7 @@ void update_param(
 namespace lane_departure_checker
 {
 LaneDepartureCheckerNode::LaneDepartureCheckerNode(const rclcpp::NodeOptions & options)
-: Node("lane_departure_checker_node", options)
+: TildeNode("lane_departure_checker_node", options)
 {
   using std::placeholders::_1;
 
@@ -154,18 +154,18 @@ LaneDepartureCheckerNode::LaneDepartureCheckerNode(const rclcpp::NodeOptions & o
   lane_departure_checker_->setParam(param_, vehicle_info);
 
   // Subscriber
-  sub_odom_ = this->create_subscription<nav_msgs::msg::Odometry>(
+  sub_odom_ = this->create_tilde_subscription<nav_msgs::msg::Odometry>(
     "~/input/odometry", 1, std::bind(&LaneDepartureCheckerNode::onOdometry, this, _1));
-  sub_lanelet_map_bin_ = this->create_subscription<HADMapBin>(
+  sub_lanelet_map_bin_ = this->create_tilde_subscription<HADMapBin>(
     "~/input/lanelet_map_bin", rclcpp::QoS{1}.transient_local(),
     std::bind(&LaneDepartureCheckerNode::onLaneletMapBin, this, _1));
-  sub_route_ = this->create_subscription<HADMapRoute>(
+  sub_route_ = this->create_tilde_subscription<HADMapRoute>(
     "~/input/route", rclcpp::QoS{1}.transient_local(),
     std::bind(&LaneDepartureCheckerNode::onRoute, this, _1));
-  sub_reference_trajectory_ = this->create_subscription<Trajectory>(
+  sub_reference_trajectory_ = this->create_tilde_subscription<Trajectory>(
     "~/input/reference_trajectory", 1,
     std::bind(&LaneDepartureCheckerNode::onReferenceTrajectory, this, _1));
-  sub_predicted_trajectory_ = this->create_subscription<Trajectory>(
+  sub_predicted_trajectory_ = this->create_tilde_subscription<Trajectory>(
     "~/input/predicted_trajectory", 1,
     std::bind(&LaneDepartureCheckerNode::onPredictedTrajectory, this, _1));
 

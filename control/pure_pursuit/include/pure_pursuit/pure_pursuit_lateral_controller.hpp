@@ -49,6 +49,9 @@
 #include <memory>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 using autoware::motion::control::trajectory_follower::InputData;
 using autoware::motion::control::trajectory_follower::LateralControllerBase;
 using autoware::motion::control::trajectory_follower::LateralOutput;
@@ -76,10 +79,10 @@ struct DebugData
 class PurePursuitLateralController : public LateralControllerBase
 {
 public:
-  explicit PurePursuitLateralController(rclcpp::Node & node);
+  explicit PurePursuitLateralController(tilde::TildeNode & node);
 
 private:
-  rclcpp::Node::SharedPtr node_;
+  tilde::TildeNode::SharedPtr node_;
   tier4_autoware_utils::SelfPoseListener self_pose_listener_;
 
   autoware_auto_planning_msgs::msg::Trajectory::ConstSharedPtr trajectory_;
@@ -97,7 +100,7 @@ private:
   geometry_msgs::msg::PoseStamped::ConstSharedPtr current_pose_;
 
   // Debug Publisher
-  rclcpp::Publisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_debug_marker_;
+  tilde::TildePublisher<visualization_msgs::msg::MarkerArray>::SharedPtr pub_debug_marker_;
 
   void publishDebugMarker() const;
 

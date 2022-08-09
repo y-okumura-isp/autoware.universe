@@ -22,7 +22,7 @@
 #include <utility>
 
 ExternalCmdSelector::ExternalCmdSelector(const rclcpp::NodeOptions & node_options)
-: Node("external_cmd_selector", node_options)
+: TildeNode("external_cmd_selector", node_options)
 {
   using std::placeholders::_1;
   using std::placeholders::_2;
@@ -33,12 +33,12 @@ ExternalCmdSelector::ExternalCmdSelector(const rclcpp::NodeOptions & node_option
 
   // Publisher
   pub_current_selector_mode_ =
-    create_publisher<CommandSourceMode>("~/output/current_selector_mode", 1);
-  pub_control_cmd_ = create_publisher<ExternalControlCommand>("~/output/control_cmd", 1);
-  pub_shift_cmd_ = create_publisher<InternalGearShift>("~/output/gear_cmd", 1);
-  pub_turn_signal_cmd_ = create_publisher<InternalTurnSignal>("~/output/turn_indicators_cmd", 1);
-  pub_hazard_signal_cmd_ = create_publisher<InternalHazardSignal>("~/output/hazard_lights_cmd", 1);
-  pub_heartbeat_ = create_publisher<InternalHeartbeat>("~/output/heartbeat", 1);
+    create_tilde_publisher<CommandSourceMode>("~/output/current_selector_mode", 1);
+  pub_control_cmd_ = create_tilde_publisher<ExternalControlCommand>("~/output/control_cmd", 1);
+  pub_shift_cmd_ = create_tilde_publisher<InternalGearShift>("~/output/gear_cmd", 1);
+  pub_turn_signal_cmd_ = create_tilde_publisher<InternalTurnSignal>("~/output/turn_indicators_cmd", 1);
+  pub_hazard_signal_cmd_ = create_tilde_publisher<InternalHazardSignal>("~/output/hazard_lights_cmd", 1);
+  pub_heartbeat_ = create_tilde_publisher<InternalHeartbeat>("~/output/heartbeat", 1);
 
   // Callback Groups
   callback_group_subscribers_ =
@@ -50,29 +50,29 @@ ExternalCmdSelector::ExternalCmdSelector(const rclcpp::NodeOptions & node_option
   subscriber_option.callback_group = callback_group_subscribers_;
 
   // Subscriber
-  sub_local_control_cmd_ = create_subscription<ExternalControlCommand>(
+  sub_local_control_cmd_ = create_tilde_subscription<ExternalControlCommand>(
     "~/input/local/control_cmd", 1, std::bind(&ExternalCmdSelector::onLocalControlCmd, this, _1),
     subscriber_option);
-  sub_local_shift_cmd_ = create_subscription<ExternalGearShift>(
+  sub_local_shift_cmd_ = create_tilde_subscription<ExternalGearShift>(
     "~/input/local/shift_cmd", 1, std::bind(&ExternalCmdSelector::onLocalShiftCmd, this, _1),
     subscriber_option);
-  sub_local_turn_signal_cmd_ = create_subscription<ExternalTurnSignal>(
+  sub_local_turn_signal_cmd_ = create_tilde_subscription<ExternalTurnSignal>(
     "~/input/local/turn_signal_cmd", 1,
     std::bind(&ExternalCmdSelector::onLocalTurnSignalCmd, this, _1), subscriber_option);
-  sub_local_heartbeat_ = create_subscription<ExternalHeartbeat>(
+  sub_local_heartbeat_ = create_tilde_subscription<ExternalHeartbeat>(
     "~/input/local/heartbeat", 1, std::bind(&ExternalCmdSelector::onLocalHeartbeat, this, _1),
     subscriber_option);
 
-  sub_remote_control_cmd_ = create_subscription<ExternalControlCommand>(
+  sub_remote_control_cmd_ = create_tilde_subscription<ExternalControlCommand>(
     "~/input/remote/control_cmd", 1, std::bind(&ExternalCmdSelector::onRemoteControlCmd, this, _1),
     subscriber_option);
-  sub_remote_shift_cmd_ = create_subscription<ExternalGearShift>(
+  sub_remote_shift_cmd_ = create_tilde_subscription<ExternalGearShift>(
     "~/input/remote/shift_cmd", 1, std::bind(&ExternalCmdSelector::onRemoteShiftCmd, this, _1),
     subscriber_option);
-  sub_remote_turn_signal_cmd_ = create_subscription<ExternalTurnSignal>(
+  sub_remote_turn_signal_cmd_ = create_tilde_subscription<ExternalTurnSignal>(
     "~/input/remote/turn_signal_cmd", 1,
     std::bind(&ExternalCmdSelector::onRemoteTurnSignalCmd, this, _1), subscriber_option);
-  sub_remote_heartbeat_ = create_subscription<ExternalHeartbeat>(
+  sub_remote_heartbeat_ = create_tilde_subscription<ExternalHeartbeat>(
     "~/input/remote/heartbeat", 1, std::bind(&ExternalCmdSelector::onRemoteHeartbeat, this, _1),
     subscriber_option);
 

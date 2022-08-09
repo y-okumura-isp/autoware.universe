@@ -33,6 +33,9 @@
 #include <string>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace obstacle_collision_checker
 {
 using tier4_autoware_utils::LinearRing2d;

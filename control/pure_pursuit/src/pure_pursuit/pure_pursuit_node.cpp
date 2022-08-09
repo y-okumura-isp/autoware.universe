@@ -54,7 +54,7 @@ double calcLookaheadDistance(
 namespace pure_pursuit
 {
 PurePursuitNode::PurePursuitNode(const rclcpp::NodeOptions & node_options)
-: Node("pure_pursuit", node_options), tf_buffer_(this->get_clock()), tf_listener_(tf_buffer_)
+: TildeNode("pure_pursuit", node_options), tf_buffer_(this->get_clock()), tf_listener_(tf_buffer_)
 {
   pure_pursuit_ = std::make_unique<PurePursuit>();
 
@@ -74,18 +74,18 @@ PurePursuitNode::PurePursuitNode(const rclcpp::NodeOptions & node_options)
 
   // Subscribers
   using std::placeholders::_1;
-  sub_trajectory_ = this->create_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
+  sub_trajectory_ = this->create_tilde_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
     "input/reference_trajectory", 1, std::bind(&PurePursuitNode::onTrajectory, this, _1));
-  sub_current_odometry_ = this->create_subscription<nav_msgs::msg::Odometry>(
+  sub_current_odometry_ = this->create_tilde_subscription<nav_msgs::msg::Odometry>(
     "input/current_odometry", 1, std::bind(&PurePursuitNode::onCurrentOdometry, this, _1));
 
   // Publishers
-  pub_ctrl_cmd_ = this->create_publisher<autoware_auto_control_msgs::msg::AckermannLateralCommand>(
+  pub_ctrl_cmd_ = this->create_tilde_publisher<autoware_auto_control_msgs::msg::AckermannLateralCommand>(
     "output/control_raw", 1);
 
   // Debug Publishers
   pub_debug_marker_ =
-    this->create_publisher<visualization_msgs::msg::MarkerArray>("~/debug/markers", 0);
+    this->create_tilde_publisher<visualization_msgs::msg::MarkerArray>("~/debug/markers", 0);
 
   // Timer
   {

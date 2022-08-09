@@ -21,6 +21,8 @@
   <depend>motion_utils</depend>
   <depend>nav_msgs</depend>
   <depend>rclcpp</depend>
+  <depend>tilde</depend>
+  <depend>tilde_msg</depend>
   <depend>rclcpp_components</depend>
   <depend>tf2</depend>
   <depend>tf2_eigen</depend>

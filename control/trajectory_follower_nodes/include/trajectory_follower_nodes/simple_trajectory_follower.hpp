@@ -26,6 +26,9 @@
 
 #include <memory>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace simple_trajectory_follower
 {
 using autoware_auto_control_msgs::msg::AckermannControlCommand;
@@ -35,7 +38,7 @@ using geometry_msgs::msg::Pose;
 using geometry_msgs::msg::Twist;
 using nav_msgs::msg::Odometry;
 
-class SimpleTrajectoryFollower : public rclcpp::Node
+class SimpleTrajectoryFollower : public tilde::TildeNode
 {
 public:
   explicit SimpleTrajectoryFollower(const rclcpp::NodeOptions & options);
@@ -44,7 +47,7 @@ public:
 private:
   rclcpp::Subscription<Odometry>::SharedPtr sub_kinematics_;
   rclcpp::Subscription<Trajectory>::SharedPtr sub_trajectory_;
-  rclcpp::Publisher<AckermannControlCommand>::SharedPtr pub_cmd_;
+  tilde::TildePublisher<AckermannControlCommand>::SharedPtr pub_cmd_;
   rclcpp::TimerBase::SharedPtr timer_;
 
   Trajectory::SharedPtr trajectory_;

@@ -44,7 +44,7 @@ void update_param(
 namespace obstacle_collision_checker
 {
 ObstacleCollisionCheckerNode::ObstacleCollisionCheckerNode(const rclcpp::NodeOptions & node_options)
-: Node("obstacle_collision_checker_node", node_options), updater_(this)
+: TildeNode("obstacle_collision_checker_node", node_options), updater_(this)
 {
   using std::placeholders::_1;
 
@@ -70,16 +70,16 @@ ObstacleCollisionCheckerNode::ObstacleCollisionCheckerNode(const rclcpp::NodeOpt
   self_pose_listener_ = std::make_shared<tier4_autoware_utils::SelfPoseListener>(this);
   transform_listener_ = std::make_shared<tier4_autoware_utils::TransformListener>(this);
 
-  sub_obstacle_pointcloud_ = create_subscription<sensor_msgs::msg::PointCloud2>(
+  sub_obstacle_pointcloud_ = create_tilde_subscription<sensor_msgs::msg::PointCloud2>(
     "input/obstacle_pointcloud", 1,
     std::bind(&ObstacleCollisionCheckerNode::onObstaclePointcloud, this, _1));
-  sub_reference_trajectory_ = create_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
+  sub_reference_trajectory_ = create_tilde_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
     "input/reference_trajectory", 1,
     std::bind(&ObstacleCollisionCheckerNode::onReferenceTrajectory, this, _1));
-  sub_predicted_trajectory_ = create_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
+  sub_predicted_trajectory_ = create_tilde_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
     "input/predicted_trajectory", 1,
     std::bind(&ObstacleCollisionCheckerNode::onPredictedTrajectory, this, _1));
-  sub_odom_ = create_subscription<nav_msgs::msg::Odometry>(
+  sub_odom_ = create_tilde_subscription<nav_msgs::msg::Odometry>(
     "input/odometry", 1, std::bind(&ObstacleCollisionCheckerNode::onOdom, this, _1));
 
   // Publisher

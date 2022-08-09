@@ -36,7 +36,7 @@ using vehicle_info_util::VehicleInfoUtil;
 
 ControlPerformanceAnalysisNode::ControlPerformanceAnalysisNode(
   const rclcpp::NodeOptions & node_options)
-: Node("control_performance_analysis", node_options)
+: TildeNode("control_performance_analysis", node_options)
 {
   using std::placeholders::_1;
 
@@ -58,24 +58,24 @@ ControlPerformanceAnalysisNode::ControlPerformanceAnalysisNode(
     param_.acceptable_min_waypoint_distance, param_.prevent_zero_division_value, param_.lpf_gain);
 
   // Subscribers.
-  sub_trajectory_ = create_subscription<Trajectory>(
+  sub_trajectory_ = create_tilde_subscription<Trajectory>(
     "~/input/reference_trajectory", 1,
     std::bind(&ControlPerformanceAnalysisNode::onTrajectory, this, _1));
 
-  sub_control_cmd_ = create_subscription<AckermannControlCommand>(
+  sub_control_cmd_ = create_tilde_subscription<AckermannControlCommand>(
     "~/input/control_raw", 1, std::bind(&ControlPerformanceAnalysisNode::onControlRaw, this, _1));
 
-  sub_vehicle_steering_ = create_subscription<SteeringReport>(
+  sub_vehicle_steering_ = create_tilde_subscription<SteeringReport>(
     "~/input/measured_steering", 1,
     std::bind(&ControlPerformanceAnalysisNode::onVecSteeringMeasured, this, _1));
 
-  sub_velocity_ = create_subscription<Odometry>(
+  sub_velocity_ = create_tilde_subscription<Odometry>(
     "~/input/odometry", 1, std::bind(&ControlPerformanceAnalysisNode::onVelocity, this, _1));
 
   // Publishers
-  pub_error_msg_ = create_publisher<ErrorStamped>("~/output/error_stamped", 1);
+  pub_error_msg_ = create_tilde_publisher<ErrorStamped>("~/output/error_stamped", 1);
 
-  pub_driving_msg_ = create_publisher<DrivingMonitorStamped>("~/output/driving_status_stamped", 1);
+  pub_driving_msg_ = create_tilde_publisher<DrivingMonitorStamped>("~/output/driving_status_stamped", 1);
 
   // Wait for first self pose
   self_pose_listener_.waitForFirstPose();

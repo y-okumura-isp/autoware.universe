@@ -18,6 +18,8 @@
   <depend>motion_utils</depend>
   <depend>pure_pursuit</depend>
   <depend>rclcpp</depend>
+  <depend>tilde</depend>
+  <depend>tilde_msg</depend>
   <depend>rclcpp_components</depend>
   <depend>trajectory_follower</depend>
   <depend>vehicle_info_util</depend>

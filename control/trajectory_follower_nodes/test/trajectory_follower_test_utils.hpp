@@ -25,6 +25,9 @@
 #include <memory>
 #include <string>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace test_utils
 {
 using FakeNodeFixture = autoware::tools::testing::FakeTestNode;

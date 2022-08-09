@@ -33,19 +33,22 @@
 #include <memory>
 #include <utility>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace operation_mode_transition_manager
 {
 
-class OperationModeTransitionManager : public rclcpp::Node
+class OperationModeTransitionManager : public tilde::TildeNode
 {
 public:
   explicit OperationModeTransitionManager(const rclcpp::NodeOptions & options);
   ~OperationModeTransitionManager() = default;
 
 private:
-  rclcpp::Publisher<OperationMode>::SharedPtr pub_operation_mode_;
-  rclcpp::Publisher<IsAutonomousAvailable>::SharedPtr pub_auto_available_;
-  rclcpp::Publisher<OperationModeTransitionManagerDebug>::SharedPtr pub_debug_info_;
+  tilde::TildePublisher<OperationMode>::SharedPtr pub_operation_mode_;
+  tilde::TildePublisher<IsAutonomousAvailable>::SharedPtr pub_auto_available_;
+  tilde::TildePublisher<OperationModeTransitionManagerDebug>::SharedPtr pub_debug_info_;
   rclcpp::Subscription<Odometry>::SharedPtr sub_vehicle_kinematics_;
   rclcpp::Subscription<Trajectory>::SharedPtr sub_trajectory_;
   rclcpp::Subscription<AckermannControlCommand>::SharedPtr sub_control_cmd_;

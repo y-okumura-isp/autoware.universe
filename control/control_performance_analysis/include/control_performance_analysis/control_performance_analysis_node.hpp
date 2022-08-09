@@ -34,6 +34,9 @@
 #include <memory>
 #include <utility>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace control_performance_analysis
 {
 using autoware_auto_control_msgs::msg::AckermannControlCommand;
@@ -59,7 +62,7 @@ struct Param
   double acceptable_min_waypoint_distance;
 };
 
-class ControlPerformanceAnalysisNode : public rclcpp::Node
+class ControlPerformanceAnalysisNode : public tilde::TildeNode
 {
 public:
   explicit ControlPerformanceAnalysisNode(const rclcpp::NodeOptions & node_options);
@@ -76,8 +79,8 @@ private:
   tier4_autoware_utils::SelfPoseListener self_pose_listener_{this};  // subscribe to pose listener.
 
   // Publishers
-  rclcpp::Publisher<ErrorStamped>::SharedPtr pub_error_msg_;  // publish error message
-  rclcpp::Publisher<DrivingMonitorStamped>::SharedPtr
+  tilde::TildePublisher<ErrorStamped>::SharedPtr pub_error_msg_;  // publish error message
+  tilde::TildePublisher<DrivingMonitorStamped>::SharedPtr
     pub_driving_msg_;  // publish driving status message
 
   // Node Methods

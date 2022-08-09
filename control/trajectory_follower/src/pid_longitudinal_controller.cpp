@@ -34,7 +34,7 @@ namespace control
 {
 namespace trajectory_follower
 {
-PidLongitudinalController::PidLongitudinalController(rclcpp::Node & node) : node_{&node}
+PidLongitudinalController::PidLongitudinalController(tilde::TildeNode & node) : node_{&node}
 {
   using std::placeholders::_1;
 
@@ -180,10 +180,10 @@ PidLongitudinalController::PidLongitudinalController(rclcpp::Node & node) : node
 
   // subscriber, publisher
   m_pub_slope =
-    node_->create_publisher<autoware_auto_system_msgs::msg::Float32MultiArrayDiagnostic>(
+    node_->create_tilde_publisher<autoware_auto_system_msgs::msg::Float32MultiArrayDiagnostic>(
       "~/output/slope_angle", rclcpp::QoS{1});
   m_pub_debug =
-    node_->create_publisher<autoware_auto_system_msgs::msg::Float32MultiArrayDiagnostic>(
+    node_->create_tilde_publisher<autoware_auto_system_msgs::msg::Float32MultiArrayDiagnostic>(
       "~/output/longitudinal_diagnostic", rclcpp::QoS{1});
 
   // set parameter callback

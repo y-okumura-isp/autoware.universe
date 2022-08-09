@@ -36,7 +36,7 @@ namespace control
 {
 namespace trajectory_follower_nodes
 {
-Controller::Controller(const rclcpp::NodeOptions & node_options) : Node("controller", node_options)
+Controller::Controller(const rclcpp::NodeOptions & node_options) : TildeNode("controller", node_options)
 {
   using std::placeholders::_1;
 
@@ -70,13 +70,13 @@ Controller::Controller(const rclcpp::NodeOptions & node_options) : Node("control
       throw std::domain_error("[LongitudinalController] invalid algorithm");
   }
 
-  sub_ref_path_ = create_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
+  sub_ref_path_ = create_tilde_subscription<autoware_auto_planning_msgs::msg::Trajectory>(
     "~/input/reference_trajectory", rclcpp::QoS{1}, std::bind(&Controller::onTrajectory, this, _1));
-  sub_steering_ = create_subscription<autoware_auto_vehicle_msgs::msg::SteeringReport>(
+  sub_steering_ = create_tilde_subscription<autoware_auto_vehicle_msgs::msg::SteeringReport>(
     "~/input/current_steering", rclcpp::QoS{1}, std::bind(&Controller::onSteering, this, _1));
-  sub_odometry_ = create_subscription<nav_msgs::msg::Odometry>(
+  sub_odometry_ = create_tilde_subscription<nav_msgs::msg::Odometry>(
     "~/input/current_odometry", rclcpp::QoS{1}, std::bind(&Controller::onOdometry, this, _1));
-  control_cmd_pub_ = create_publisher<autoware_auto_control_msgs::msg::AckermannControlCommand>(
+  control_cmd_pub_ = create_tilde_publisher<autoware_auto_control_msgs::msg::AckermannControlCommand>(
     "~/output/control_cmd", rclcpp::QoS{1}.transient_local());
 
   // Timer

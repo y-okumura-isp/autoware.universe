@@ -39,6 +39,9 @@
 #include <memory>
 #include <vector>
 
+#include "tilde/tilde_publisher.hpp"
+#include "tilde/tilde_node.hpp"
+
 namespace lane_departure_checker
 {
 using autoware_auto_mapping_msgs::msg::HADMapBin;
@@ -49,7 +52,7 @@ struct NodeParam
   bool visualize_lanelet;
 };
 
-class LaneDepartureCheckerNode : public rclcpp::Node
+class LaneDepartureCheckerNode : public tilde::TildeNode
 {
 public:
   explicit LaneDepartureCheckerNode(const rclcpp::NodeOptions & options);
